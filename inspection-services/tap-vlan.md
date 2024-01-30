@@ -1,4 +1,4 @@
-## TAP Inspection Service
+## TAP-VLAN Inspection Service
 
 ${\large{\textbf{\textsf{\color{red}Definition}}}}$
 
@@ -7,6 +7,8 @@ foo bar blah
 ${\normalsize{\textsf{\color{white}===}}}$
 
 ${\large{\textbf{\textsf{\color{red}API\ Prototype}}}}$
+
+**CREATE**
 ```json
 {
   "name": "my-sslo-tap",
