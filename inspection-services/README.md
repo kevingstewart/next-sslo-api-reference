@@ -25,7 +25,7 @@ SSL Orchestrator inspection services all share a common set of API patterns that
 
 ___
 
-${\large{\textbf{\textsf{\color{red}Get\ BIG-IP\ Instances}}}}$
+${\large{\textbf{\textsf{\color{red}Get\ BIG-IP\ Next\ Instances}}}}$
 
 Deploying an inspection service requires two steps: defining the inspection service, and deploying to a BIG-IP Next instance. Creating an inspection service is detailed in the individual sections, but all involve the same deploy to BIG-IP instance pattern. To deploy to an instance, you first need the ID of the BIG-IP Next instance. The ID returned in the following request will be at ```_embedded.devices[X].id``` where X is the index.
 
