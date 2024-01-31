@@ -140,7 +140,7 @@ ${\normalsize{\textsf{\color{white}===}}}$
 
 ${\large{\textbf{\textsf{\color{red}Update\ an\ Inspection\ Service}}}}$
 
-Updating an existing inspection service required the ID of the target inspection service.
+Updating an existing inspection service requires the ID of the target inspection service.
 
 **Basic**
 ```bash
