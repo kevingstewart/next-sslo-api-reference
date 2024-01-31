@@ -16,10 +16,12 @@ ${\large{\textbf{\textsf{\color{red}Common\ Inspection\ Service\ Patterns}}}}$
 
 SSL Orchestrator inspection services all share a common set of API patterns that can be described here:
 
-* Getting the list of BIG-IP instances
-* Getting the list of inspection services
-* Deploying and un-deploying a created inspection service to/from a BIG-IP instance
+* Getting the list of BIG-IP instances (needed for instance IDs)
+* Getting the list of inspection services (needed for inspection service IDs)
+* Deploying a created inspection service to a BIG-IP instance
+* Un-deploying an inspection service from a BIG-IP instance
 * Deleting an inspection service
+* Updating an inspection service
 
 ___
 
