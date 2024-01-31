@@ -63,7 +63,7 @@ insp_id=$(curl -sk -H "Authorization: Bearer ${token}" "https://${CM}/api/v1/spa
 
 ${\normalsize{\textsf{\color{white}===}}}$
 
-${\large{\textbf{\textsf{\color{red}Deploy\ Inspection\ Service}}}}$
+${\large{\textbf{\textsf{\color{red}Deploy\ an\ Inspection\ Service}}}}$
 
 Deploying to a BIG-IP instance requires the inspection service ID in the REST URL, and the BIG-IP Next instance ID in the JSON payload.
 
@@ -95,7 +95,7 @@ curl -sk -H "Authorization: Bearer ${token}" -H "Content-Type: application/json"
 
 ${\normalsize{\textsf{\color{white}===}}}$
 
-${\large{\textbf{\textsf{\color{red}Un-deploy\ Inspection\ Service}}}}$
+${\large{\textbf{\textsf{\color{red}Un-deploy\ an\ Inspection\ Service}}}}$
 
 Un-deploying to a BIG-IP instance requires the inspection service ID in the REST URL, and the BIG-IP Next instance ID in the JSON payload. If the inspection service is part of deployed service chains, it must first also be removed from those service chains before un-deploying and deleting.
 
@@ -127,7 +127,7 @@ curl -sk -H "Authorization: Bearer ${token}" -H "Content-Type: application/json"
 
 ${\normalsize{\textsf{\color{white}===}}}$
 
-${\large{\textbf{\textsf{\color{red}Deleting\ an\ Inspection\ Service}}}}$
+${\large{\textbf{\textsf{\color{red}Delete\ an\ Inspection\ Service}}}}$
 
 To delete an inspection service, it must fist be un-deployed from any BIG-IP Next instances. The REST call to delete requires the inspection service ID.
 
