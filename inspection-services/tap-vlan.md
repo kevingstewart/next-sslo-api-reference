@@ -72,13 +72,4 @@ EOF
 curl -sk -H "Authorization: Bearer ${token}" -H "Content-Type: application/json" "https://${CM}/api/v1/spaces/default/security/inspection-services/${insp_id}/deployment" -d "${DEPLOY}"
 ```
 
-___
-
-${\large{\textbf{\textsf{\color{red}TAP\ Inspection\ Service\ API\ Reference}}}}$
-
-___
-
-${\large{\textbf{\textsf{\color{red}Update\ TAP\ Inspection\ Service}}}}$
-
-
 
