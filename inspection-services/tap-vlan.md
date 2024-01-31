@@ -8,7 +8,7 @@ ___
 
 ${\large{\textbf{\textsf{\color{red}Create\ TAP\ Inspection\ Service}}}}$
 
-For the **TAP-VLAN** variant, the only requirements for defining are name, description, type (tap-vlan), and corresponding VLAN (L1-network). Optionally, a MAC address can be asserted. The resulting ID will be at ```.id```.
+For the **TAP-VLAN** variant, the only requirements for defining are name, description, type (tap-vlan), and corresponding VLAN (L1-network). Optionally, a **destinationMacAddress** can be asserted within the **network** block. The resulting ID will be at ```.id```.
 
 **Basic**
 ```bash
