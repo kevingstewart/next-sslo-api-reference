@@ -133,7 +133,41 @@ To delete an inspection service, it must fist be un-deployed from any BIG-IP Nex
 ```bash
 DELETE {{CM}}/api/v1/spaces/default/security/inspection-services/{{insp_id}}
 ```
+
+${\normalsize{\textsf{\color{white}===}}}$
+
+${\large{\textbf{\textsf{\color{red}Update\ an\ Inspection\ Service}}}}$
+
+Updating an existing inspection service required the ID of the target inspection service.
+
+**Basic**
+```bash
+PUT {{CM}}/api/v1/spaces/default/security/inspection-services/{{insp_id}}
+```
+```json
+{
+  "name": "my-sslo-tap",
+  "description": "My SSLO Tap Inspection Service",
+  "type": "tap-vlan",
+  "network": {
+    "vlan": "sslo-insp-tap",
+    "destinationmacAddress": "f5:f5:f5:f5:f5:f5"
+  }
+}
+```
 **Curl**
 ```bash
-curl -sk -H "Authorization: Bearer ${token}" -X DELETE "https://${CM}/api/v1/spaces/default/security/inspection-services/${insp_id}"
+INSP=$(cat <<EOF
+{
+  "name": "my-sslo-tap",
+  "description": "My SSLO Tap Inspection Service",
+  "type": "tap-vlan",
+  "network": {
+    "vlan": "sslo-insp-tap",
+    "destinationmacAddress": "f5:f5:f5:f5:f5:f5"
+  }
+}
+EOF
+)
+curl -sk -H "Authorization: Bearer ${token}" -H "Content-Type: application/json" "https://${CM}/api/v1/spaces/default/security/inspection-services/${insp_id}" -d "${INSP}"
 ```
