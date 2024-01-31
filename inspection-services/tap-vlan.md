@@ -80,8 +80,5 @@ ___
 
 ${\large{\textbf{\textsf{\color{red}Update\ TAP\ Inspection\ Service}}}}$
 
-___
-
-${\large{\textbf{\textsf{\color{red}Delete\ TAP\ Inspection\ Service}}}}$
 
 
