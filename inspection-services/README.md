@@ -29,7 +29,7 @@ ___
 *Note:*
 
 * *Values below in {{double curly brackets}} indicate typical environment variables defined in Postman or the Visual Studio Code Thunder Client.*
-* *The {{CM}} variable would be a statically defined environment variable for the Central Manager host/IP.*
+* *The {{CM}} variable would be a statically defined Postman/Thunder environment variable for the Central Manager host/IP.*
 * *The ${CM} variable in the Bash commands is the export of the Central Manager host/IP (ex. ```export CM=10.1.1.6```)*
 ___
 
