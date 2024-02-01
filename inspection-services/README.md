@@ -74,14 +74,14 @@ POST {{CM}}/api/v1/spaces/default/security/inspection-services
 ```
 ```json
 {
-  [inspection service specific properties]
+  -- inspection service specific properties --
 }
 ```
 **Curl**
 ```bash
 INSP=$(cat <<EOF
 {
-  [inspection service specific properties]
+  -- inspection service specific properties --
 }
 EOF
 )
