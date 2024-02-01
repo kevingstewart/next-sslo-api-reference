@@ -79,7 +79,7 @@ All inspection services will have a similar creation workflow, except for the sp
 ```bash
 POST {{CM}}/api/v1/spaces/default/security/inspection-services
 ```
-```json
+```bash
 {
   -- inspection service specific properties --
 }
