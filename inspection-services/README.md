@@ -18,6 +18,7 @@ SSL Orchestrator inspection services all share a common set of API patterns that
 
 * Getting the list of BIG-IP instances (needed for instance IDs)
 * Getting the list of inspection services (needed for inspection service IDs)
+* Creating an inspection service (with specific documentation for each in different pages)
 * Deploying a created inspection service to a BIG-IP instance
 * Un-deploying an inspection service from a BIG-IP instance
 * Deleting an inspection service
@@ -60,6 +61,33 @@ GET {{CM}}/api/v1/spaces/default/security/inspection-services?filter=name+eq+%27
 ```bash
 insp_id=$(curl -sk -H "Authorization: Bearer ${token}" "https://${CM}/api/v1/spaces/default/security/inspection-services?filter=name+eq+%27my-sslo-tap%27&select=name,id" |jq -r '._embedded.inspection_services[0].id')
 ```
+
+${\normalsize{\textsf{\color{white}===}}}$
+
+${\large{\textbf{\textsf{\color{red}Create\ an\ Inspection\ Service}}}}$
+
+All inspection services will have a similar creation workflow, except for the specific JSON payload. The resulting ID value in the JSON response will be at ```.id```.
+
+**Basic**
+```bash
+POST {{CM}}/api/v1/spaces/default/security/inspection-services
+```
+```json
+{
+  <-- inspection service specific properties -->
+}
+```
+**Curl**
+```bash
+INSP=$(cat <<EOF
+{
+  <-- inspection service specific properties -->
+}
+EOF
+)
+curl -sk -H "Authorization: Bearer ${token}" -H "Content-Type: application/json" "https://${CM}/api/v1/spaces/default/security/inspection-services" -d "${INSP}"
+```
+
 
 ${\normalsize{\textsf{\color{white}===}}}$
 
