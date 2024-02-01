@@ -26,6 +26,13 @@ SSL Orchestrator inspection services all share a common set of API patterns that
 
 ___
 
+*Note:*
+
+* *Values below in {{double curly brackets}} indicate typical environment variables defined in Postman or the Visual Studio Code Thunder Client.*
+* *The {{CM}} variable would be a statically defined environment variable for the Central Manager host/IP.*
+* *The ${CM} variable in the Bash commands is the export of the Central Manager host/IP (ex. ```export CM=10.1.1.6```)*
+___
+
 ${\large{\textbf{\textsf{\color{red}Get\ BIG-IP\ Next\ Instances}}}}$
 
 Deploying an inspection service requires two steps: defining the inspection service, and deploying to a BIG-IP Next instance. Creating an inspection service is detailed in the individual sections, but all involve the same deploy to BIG-IP instance pattern. To deploy to an instance, you first need the ID of the BIG-IP Next instance. The ID returned in the following request will be at ```_embedded.devices[X].id``` where X is the index.
