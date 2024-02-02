@@ -78,6 +78,22 @@ insp_id=$(curl -sk -H "Authorization: Bearer ${token}" -H "Content-Type: applica
 
 ${\normalsize{\textsf{\color{white}===}}}$
 
-${\large{\textbf{\textsf{\color{red}Reference}}}}$
+${\large{\textbf{\textsf{\color{red}API\Reference}}}}$
 
-[table]
+| Required | Attribute | Defaults | Notes |
+|:-:|---|:-:|---|
+| * | name |  |  |
+| * | description |  |  |
+| * | type |  | string: must be "**icap**" |
+| * | requestModificationURI |  |  |
+| * | responseModificationURI |  |  |
+| * | serviceDownAction | none | "ignore", "drop", or "reset" |
+| * | monitor | none | "tcp": {<br>&nbsp;&nbsp;"interval": 10,<br>&nbsp;&nbsp;"timeout": 10<br>} |
+| * | network: vlan |  |  |
+| * | network: endpoints |  | array: { "address":"ip-address:port" } |
+|  | previewLength | 0 |  |
+|  | headerFrom |  | string |
+|  | host |  | string |
+|  | referer |  | string |
+|  | userAgent |  | string |
+|  | allowHTTP1.0 | false | boolean |
