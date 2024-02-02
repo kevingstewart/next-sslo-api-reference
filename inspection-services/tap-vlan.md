@@ -44,7 +44,13 @@ ${\normalsize{\textsf{\color{white}===}}}$
 
 ${\large{\textbf{\textsf{\color{red}Reference}}}}$
 
-[table]
+| Required | Attribute | Defaults | Notes |
+|:-:|---|---|---|
+| * | name |  |  |
+| * | description |  |  |
+| * | type |  | string: must be "**tap-vlan**" |
+| * | network: vlan |  |  |
+|  | network: destinationMacAddress |  |  |
 
 
 
