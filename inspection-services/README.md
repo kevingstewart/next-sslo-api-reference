@@ -164,11 +164,15 @@ ${\normalsize{\textsf{\color{white}===}}}$
 
 ${\large{\textbf{\textsf{\color{red}Delete\ an\ Inspection\ Service}}}}$
 
-To delete an inspection service, it must fist be un-deployed from any BIG-IP Next instances. The REST call to delete requires the inspection service ID.
+To delete an inspection service, it must first be un-deployed from any BIG-IP Next instances. The REST call to delete requires the inspection service ID.
 
 **Basic**
 ```bash
 DELETE {{CM}}/api/v1/spaces/default/security/inspection-services/{{insp_id}}
+```
+**Curl**
+```bash
+curl -sk -H "Authorization: Bearer ${token}" -H "Content-Type: application/json" -X DELETE "https://${CM}/api/v1/spaces/default/security/inspection-services/${insp_id}"
 ```
 
 ${\normalsize{\textsf{\color{white}===}}}$
