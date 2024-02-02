@@ -42,34 +42,9 @@ insp_id=$(curl -sk -H "Authorization: Bearer ${token}" -H "Content-Type: applica
 
 ${\normalsize{\textsf{\color{white}===}}}$
 
-${\large{\textbf{\textsf{\color{red}Deploy\ Inspection\ Service}}}}$
+${\large{\textbf{\textsf{\color{red}Refence}}}}$
 
-Deploying to a BIG-IP instance requires the inspection service ID in the REST URL, and the BIG-IP Next instance ID in the JSON payload.
+[table]
 
-**Basic**
-```bash
-POST {{CM}}/api/v1/spaces/default/security/inspection-services/{{insp_id}}/deployment
-```
-```json
-{
-  "deploy-instances": [
-    "{{bigip_id}}"
-  ],
-  "undeploy-instances": []
-}
-```
-**Curl**
-```bash
-DEPLOY=$(cat <<EOF
-{
-  "deploy-instances": [
-    "${bigip_id}"
-  ],
-  "undeploy-instances": []
-}
-EOF
-)
-curl -sk -H "Authorization: Bearer ${token}" -H "Content-Type: application/json" "https://${CM}/api/v1/spaces/default/security/inspection-services/${insp_id}/deployment" -d "${DEPLOY}"
-```
 
 
