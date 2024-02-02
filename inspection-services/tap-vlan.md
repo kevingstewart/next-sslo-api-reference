@@ -42,7 +42,7 @@ insp_id=$(curl -sk -H "Authorization: Bearer ${token}" -H "Content-Type: applica
 
 ${\normalsize{\textsf{\color{white}===}}}$
 
-${\large{\textbf{\textsf{\color{red}Refence}}}}$
+${\large{\textbf{\textsf{\color{red}Reference}}}}$
 
 [table]
 
