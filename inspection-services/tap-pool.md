@@ -58,6 +58,12 @@ insp_id=$(curl -sk -H "Authorization: Bearer ${token}" -H "Content-Type: applica
 
 ${\normalsize{\textsf{\color{white}===}}}$
 
-${\large{\textbf{\textsf{\color{red}Reference}}}}$
+${\large{\textbf{\textsf{\color{red}API\ Reference}}}}$
 
-[table]
+| Required | Attribute | Defaults | Notes |
+|:-:|---|---|---|
+| * | name |  |  |
+| * | description |  |  |
+| * | type |  | string: must be "**tap-clone-pool**" |
+| * | network: vlan |  |  |
+| * | network: endpoints |  | array: { "address":"ip-address" } |
