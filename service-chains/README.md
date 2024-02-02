@@ -95,7 +95,7 @@ DELETE {{CM}}/api/v1/spaces/default/security/service-chains/{{chain_id}}
 ```
 **Curl**
 ```bash
-curl -sk -H "Authorization: Bearer ${token}" -H "Content-Type: application/json" -X DELETE "https://${CM}/api/v1/spaces/default/security/service-chains/{{chain_id}}"
+curl -sk -H "Authorization: Bearer ${token}" -H "Content-Type: application/json" -X DELETE "https://${CM}/api/v1/spaces/default/security/service-chains/${chain_id}"
 ```
 
 ${\normalsize{\textsf{\color{white}===}}}$
@@ -131,5 +131,5 @@ CHAIN=$(cat <<EOF
 }
 EOF
 )
-curl -sk -H "Authorization: Bearer ${token}" -H "Content-Type: application/json" -X PUT "https://${CM}/api/v1/spaces/default/security/service-chains/{{chain_id}}" -d "${CHAIN}"
+curl -sk -H "Authorization: Bearer ${token}" -H "Content-Type: application/json" -X PUT "https://${CM}/api/v1/spaces/default/security/service-chains/${chain_id}" -d "${CHAIN}"
 ```
