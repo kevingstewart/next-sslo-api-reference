@@ -21,14 +21,8 @@ POST {{CM}}/api/v1/spaces/default/security/inspection-services
   "type": "icap",
   "requestModificationURI": "avscan",
   "responseModificationURI": "avscan",
-  "previewLength": 0,
+  "oneConnect": { "sourceMask": "0.0.0.0" },
   "serviceDownAction": "ignore",
-  "monitor": {
-    "tcp": {
-      "interval": 10,
-      "timeout": 10
-    }
-  },
   "network": {
     "vlan": "sslo-insp-icap",
     "endpoints": [
@@ -51,14 +45,8 @@ INSP=$(cat <<EOF
   "type": "icap",
   "requestModificationURI": "avscan",
   "responseModificationURI": "avscan",
-  "previewLength": 0,
+  "oneConnect": { "sourceMask": "0.0.0.0" },
   "serviceDownAction": "ignore",
-  "monitor": {
-    "tcp": {
-      "interval": 10,
-      "timeout": 10
-    }
-  },
   "network": {
     "vlan": "sslo-insp-icap",
     "endpoints": [
@@ -80,20 +68,21 @@ ${\normalsize{\textsf{\color{white}===}}}$
 
 ${\large{\textbf{\textsf{\color{red}API\ Reference}}}}$
 
-| Required | Attribute | Defaults | Notes |
-|:-:|---|:-:|---|
-| * | name |  |  |
-| * | description |  |  |
-| * | type |  | string: must be "**icap**" |
-| * | requestModificationURI |  |  |
-| * | responseModificationURI |  |  |
-| * | serviceDownAction | none | "ignore", "drop", or "reset" |
-| * | monitor | none | "tcp": {<br>&nbsp;&nbsp;"interval": 10,<br>&nbsp;&nbsp;"timeout": 10<br>} |
-| * | network: vlan |  |  |
-| * | network: endpoints |  | array: { "address":"ip-address:port" } |
-|  | previewLength | 0 |  |
-|  | headerFrom |  | string |
-|  | host |  | string |
-|  | referer |  | string |
-|  | userAgent |  | string |
-|  | allowHTTP1.0 | false | boolean |
+| Required | Attribute               | Defaults | Notes                                                                                                                                                                                                                                                                                                                     |
+|----------|-------------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| *        | name                    |          |                                                                                                                                                                                                                                                                                                                           |
+| *        | description             |          |                                                                                                                                                                                                                                                                                                                           |
+| *        | type                    |          | string: must be "**icap**"                                                                                                                                                                                                                                                                                                |
+| *        | requestModificationURI  |          |                                                                                                                                                                                                                                                                                                                           |
+| *        | responseModificationURI |          |                                                                                                                                                                                                                                                                                                                           |
+| *        | serviceDownAction       | none     | "ignore", "drop", or "reset"                                                                                                                                                                                                                                                                                              |
+| *        | oneConnect              | none     | {   "sourceMask": "0.0.0.0" }                                                                                                                                                                                                                                                                                             |
+| *        | monitor                 | none     | "tcp": {<br /> &emsp;"interval": 10,<br /> &emsp;"timeout": 10<br /> }<br /> <br /> "http" {<br /> &emsp;"interval": 10,<br /> &emsp;"timeout": 10,<br /> &emsp;"sendString": "",<br /> &emsp;"receiveString": "",<br /> &emsp;"receiveDisableString": "",<br /> &emsp;"username": "",<br /> &emsp;"password": ""<br /> } |
+| *        | network: vlan           |          | string: vlan-name                                                                                                                                                                                                                                                                                                         |
+| *        | network: endpoints      |          | array: { "address":"ip-address:port" }                                                                                                                                                                                                                                                                                    |
+|          | previewLength           | 0        |                                                                                                                                                                                                                                                                                                                           |
+|          | headerFrom              |          | string                                                                                                                                                                                                                                                                                                                    |
+|          | host                    |          | string                                                                                                                                                                                                                                                                                                                    |
+|          | referer                 |          | string                                                                                                                                                                                                                                                                                                                    |
+|          | userAgent               |          | string                                                                                                                                                                                                                                                                                                                    |
+|          | allowHTTP1.0            | false    | boolean                                                                                                                                                                                                                                                                                                                   |
