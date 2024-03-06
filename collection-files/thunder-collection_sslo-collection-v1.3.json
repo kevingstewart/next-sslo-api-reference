@@ -1,0 +1,1224 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "sslo-api-collection-v1.3",
+    "dateExported": "2024-03-06T21:12:37.165Z",
+    "version": "1.1",
+    "folders": [
+        {
+            "_id": "96dafd3b-2aec-429b-8282-a333df9a0030",
+            "name": "Basic App Deployment",
+            "containerId": "",
+            "created": "2024-01-24T21:41:32.427Z",
+            "sortNum": 10000
+        },
+        {
+            "_id": "71dfaa6e-f134-44e8-affa-c6b119d1dde3",
+            "name": "Create SSLO Deployment",
+            "containerId": "",
+            "created": "2024-01-24T21:41:32.428Z",
+            "sortNum": 20000
+        },
+        {
+            "_id": "0af94160-504f-4269-8917-7183dedee97a",
+            "name": "Delete SSLO Deployment",
+            "containerId": "",
+            "created": "2024-01-24T21:41:32.431Z",
+            "sortNum": 25000
+        },
+        {
+            "_id": "63c3de3d-3d90-43de-bd0b-f0ce4fe128ad",
+            "name": "Miscellaneous",
+            "containerId": "",
+            "created": "2024-01-24T21:41:32.429Z",
+            "sortNum": 30000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "fe081f74-1e2f-4733-bf64-494efef7d352",
+            "colId": "1924ff3a-8b4b-43c5-ab82-4925be76ba47",
+            "containerId": "0af94160-504f-4269-8917-7183dedee97a",
+            "name": "CM Login",
+            "url": "{{CM}}/api/login",
+            "method": "POST",
+            "sortNum": 1250,
+            "created": "2024-01-24T21:41:32.462Z",
+            "modified": "2024-01-24T21:41:32.462Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"username\": \"{{CMUser}}\",\n  \"password\": \"{{CMPass}}\"\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ],
+            "postReq": {
+                "inlineScripts": [
+                    {
+                        "script": [
+                            "var resp = tc.response.json;",
+                            "tc.setVar(\"authToken\", resp.access_token);"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "fb6944b0-05bc-40cf-86a4-3795e4f323a1",
+            "colId": "1924ff3a-8b4b-43c5-ab82-4925be76ba47",
+            "containerId": "0af94160-504f-4269-8917-7183dedee97a",
+            "name": "Get Application & Deployment",
+            "url": "{{CM}}/api/v1/spaces/default/appsvcs/documents",
+            "method": "GET",
+            "sortNum": 2500,
+            "created": "2024-01-24T21:41:32.459Z",
+            "modified": "2024-01-24T21:41:32.459Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                }
+            ],
+            "params": [],
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ],
+            "postReq": {
+                "inlineScripts": [
+                    {
+                        "script": [
+                            "var resp = tc.response.json;",
+                            "tc.setVar(\"my_document_id\", resp._embedded.appsvcs[0].id);",
+                            "tc.setVar(\"my_deployment_id\", resp._embedded.appsvcs[0].deployments[0].id);"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "b09c1766-d5e7-4075-a238-8e2497f5eba8",
+            "colId": "1924ff3a-8b4b-43c5-ab82-4925be76ba47",
+            "containerId": "96dafd3b-2aec-429b-8282-a333df9a0030",
+            "name": "CM Login",
+            "url": "{{CM}}/api/login",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-01-24T21:41:32.427Z",
+            "modified": "2024-01-24T21:41:32.427Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"username\": \"{{CMUser}}\",\n  \"password\": \"{{CMPass}}\"\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ],
+            "postReq": {
+                "inlineScripts": [
+                    {
+                        "script": [
+                            "var resp = tc.response.json;",
+                            "tc.setVar(\"authToken\", resp.access_token);"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "40e8692c-a368-4dec-8db4-f11058a769ec",
+            "colId": "1924ff3a-8b4b-43c5-ab82-4925be76ba47",
+            "containerId": "63c3de3d-3d90-43de-bd0b-f0ce4fe128ad",
+            "name": "Install Certificate and Key",
+            "url": "{{CM}}/api/v1/spaces/default/certificates/import",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-01-24T21:41:32.434Z",
+            "modified": "2024-01-24T21:41:32.434Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"import_type\": \"PEM\",\n  \"name\": \"wildcard.f5labs.com\",\n  \"cert_text\": \"-----BEGIN CERTIFICATE-----\\nMIIEhTCCA22gAwIBAgIBAzANBgkqhkiG9w0BAQsFADBeMQswCQYDVQQGEwJVUzET\\nMBEGA1UEChMKZjVsYWJzLmNvbTEeMBwGA1UECxMVU3Vib3JkaW5hdGUgQXV0aG9y\\naXR5MRowGAYDVQQDExFzdWJyc2EuZjVsYWJzLmNvbTAeFw0xOTAyMjcxMDUzNDFa\\nFw0zMDA1MTYxMDUzNDFaMFoxCzAJBgNVBAYTAlVTMRMwEQYDVQQKEwpmNWxhYnMu\\nY29tMR8wHQYDVQQLExZXZWIgU2VydmVyIENlcnRpZmljYXRlMRUwEwYDVQQDFAwq\\nLmY1bGFicy5jb20wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCwkIHU\\nVcscXyh+oAnzSsHCMMsUfzJ8vWIM+jLnOMv5Mx0pCrDkKrtB4yRPY2OHQD9I0/sJ\\nBRK4QTAqEr+nfdBmZUFBPfppedx4snn22vlLGtcd/xcrjRo5LQCYzbBQzZfiPtuc\\n13tj/QWGwRL3fBKlwAQn2lRlBM7VLVL9C3PLKRBys7DVr3n6IerBUmjNlCXPtZnS\\nbmhDW6SufC8CwgO/Ig2/liEyZEekjJbacBf00Oo6721sG0UjveLTQP/FZy5+tru8\\nyW36ef/bcPHiS4dF8vMyqyWxzmwmQfZiLPSDbDbW0pSJm8lVBVGGqRTejqbnjrsi\\ngsyYssRi50WTqhUVAgMBAAGjggFQMIIBTDA3BglghkgBhvhCAQ0EKhYoT3BlblNT\\nTCBnZW5lcmF0ZWQgd2ViIHNlcnZlciBjZXJ0aWZpY2F0ZTAdBgNVHQ4EFgQU+dmb\\nTm1KkLQzUWA5jO/1eEwFb2gwfwYDVR0jBHgwdoAUoj6jeoxBHa7/Ew1a4vUMZ/94\\ngrKhW6RZMFcxCzAJBgNVBAYTAlVTMRMwEQYDVQQKEwpmNWxhYnMuY29tMR4wHAYD\\nVQQLExVDZXJ0aWZpY2F0ZSBBdXRob3JpdHkxEzARBgNVBAMTCmY1bGFicy5jb22C\\nAQIwFwYDVR0RBBAwDoIMKi5mNWxhYnMuY29tMCMGA1UdIAQcMBowCwYJYIZIAWUC\\nAQsFMAsGCWCGSAFlAgELEjAjBgNVHSUEHDAaBggrBgEFBQcDAQYIKwYBBQUIAgIG\\nBFUdJQAwDgYDVR0PAQH/BAQDAgWgMA0GCSqGSIb3DQEBCwUAA4IBAQCYwRlMbIKI\\nf8e98n307sddAC00rdg98bOUpteMTj8hgsWgfhOY4jXDpFWduMvCpUQOh917qOqO\\nd+2wgtdQFoeuVyvcgw3vXEuEN8rjFLPs3d4ksKeQY1ROW0iuhsdh8ieokT5JV2Ik\\nHl11RCZjfjDfmren5bXj3s8jsJ7t+KpmsqKk9sGdguzXa89W8Ux5EMb41PWiF8eC\\nMhkXHAtqOkL0FjRTfRgDrcfncdG1pTyVuk4cIH8qvuA2hA1qpyJg6tjOrJSmv4l1\\nmEyU7jhai/Q/Nd13rK2DiaePmUWv5X1H2rvunLCIaGpPcPGYN39bdZYgEGqobUcj\\nYuhVM5A1WV9K\\n-----END CERTIFICATE-----\",\n  \"key_text\": \"-----BEGIN RSA PRIVATE KEY-----\\nMIIEowIBAAKCAQEAsJCB1FXLHF8ofqAJ80rBwjDLFH8yfL1iDPoy5zjL+TMdKQqw\\n5Cq7QeMkT2Njh0A/SNP7CQUSuEEwKhK/p33QZmVBQT36aXnceLJ59tr5SxrXHf8X\\nK40aOS0AmM2wUM2X4j7bnNd7Y/0FhsES93wSpcAEJ9pUZQTO1S1S/QtzyykQcrOw\\n1a95+iHqwVJozZQlz7WZ0m5oQ1ukrnwvAsIDvyINv5YhMmRHpIyW2nAX9NDqOu9t\\nbBtFI73i00D/xWcufra7vMlt+nn/23Dx4kuHRfLzMqslsc5sJkH2Yiz0g2w21tKU\\niZvJVQVRhqkU3o6m5467IoLMmLLEYudFk6oVFQIDAQABAoIBAGMh/4L0WIGpe9b8\\njBmpU3hwZNUxRWt7+V1H7OSdowhbhnfQpNi2lUS8/1oDd5IspFuDiWLbElOZZi15\\nMVoc7bFQEH9NCRfHb93kd03+TBG7FCSnYJ73Lk4D0l34vpHfnPNOT4eUBJdzLHMo\\nXDnP07h0QuENWG0PcgGG3R1uHKlniYUKiSArYJ1w8aTCoIN+01K2nRMj2UxGQqRK\\nWBC6euoZI0BcDtQluYqYTy656dYMWf/mT7TUHJYXyrXcNzu54B3SYp3fxxv6PzCJ\\nPCvByeBkVyaO+Nc0sFoNiZeWn4RrCZw9+nAj87G/ZOyPPy9FK4zhXQEQmYU2MhFV\\niJgEuIECgYEA5UpIOiVmjp/MEOR21wItHXxPb/OwnMmIqE0ohL++IvmDS0vnM2f0\\n85eOHrdJlvGQLa+GOykkB4LTKdvVcxEW7RtmRhRS08O5t3m1WkI70b5P7xgG7hZe\\nECNpcKKsRmEmugI76xyVid/6sdK5DxKtJZMEes3VpTYIc1qt0QLRMo0CgYEAxSHh\\nKmsDwjAblU7JxyDQinjJtbL80yDGKgeusQ78Hb3T4D8XUk7eqS2DbKaNReBIx15M\\nOp3GAE5DBMoQ7jCskNB4cm2Wixq3vrg5A19mlImDhEPJNM8ifyPkxQ0sFf+wnZcd\\n66T43PxonKt58gxNhKfMY1KpWeH1J25N7JT8DqkCgYA2He4mKyWli/myEvopjQ3w\\n46IsHiwVFUv3zR4/FrJdtt5SKzwKWgLqa17TyRbJVYJeBgt8cx1Z2HrWalharDHp\\nDIp7B9j0ukFfGI7BGtjbjDt5hwY7s3PIA1OjjgFzKwLk7BoQR9LTk9Wrmryq3hGX\\nyLdJ9ML0F2ivMTvNFQkjEQKBgQCW41bIs/69fTsvro3NqDVXOBsUw7q3E6f6dcTl\\n65VYYnsxcrk0HABcN+UXnegWaxTp3Si12Ru8EitEGDKbTpBXi+oVlAId2UZ5aeLh\\nzPzkhtkuvP/eNwmtjVjG500uTXbvOMMDIlQGOgEMokgF2Brhhdpwz82macjO9KQa\\niPLheQKBgEJD5hq3VqhV00FQVL7KyOUj9p5hrhke9LRDT8Qo+HnT7fqeDfXtTf22\\nNlaXx+7qCY/NggA1M2Y6UENJ2Dd0RibPk8pMv/Y5mQDSB9Pjwij0pKZGx36jAcC0\\nbanR16qZgwqZFimS/D2r14qcGNRJxTmFoW7KnTfs0QYJ3l2S47so\\n-----END RSA PRIVATE KEY-----\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "6bb6f828-c3f7-4fba-8fc6-bc90ee37af4b",
+            "colId": "1924ff3a-8b4b-43c5-ab82-4925be76ba47",
+            "containerId": "71dfaa6e-f134-44e8-affa-c6b119d1dde3",
+            "name": "CM Login",
+            "url": "{{CM}}/api/login",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-01-24T21:41:32.435Z",
+            "modified": "2024-01-24T21:41:32.435Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"username\": \"{{CMUser}}\",\n  \"password\": \"{{CMPass}}\"\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ],
+            "postReq": {
+                "inlineScripts": [
+                    {
+                        "script": [
+                            "var resp = tc.response.json;",
+                            "tc.setVar(\"authToken\", resp.access_token);"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "ce6ff9ab-038f-4509-8309-539dbaee4125",
+            "colId": "1924ff3a-8b4b-43c5-ab82-4925be76ba47",
+            "containerId": "0af94160-504f-4269-8917-7183dedee97a",
+            "name": "Un-Deploy Application from Instance",
+            "url": "{{CM}}/api/v1/spaces/default/appsvcs/documents/{{my_document_id}}/deployments/{{my_deployment_id}}",
+            "method": "DELETE",
+            "sortNum": 10000,
+            "created": "2024-01-24T21:41:32.457Z",
+            "modified": "2024-01-24T21:41:32.457Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "59203bf9-a7a1-4af8-adfa-74280875f654",
+            "colId": "1924ff3a-8b4b-43c5-ab82-4925be76ba47",
+            "containerId": "71dfaa6e-f134-44e8-affa-c6b119d1dde3",
+            "name": "Get BIG-IP Instance ID",
+            "url": "{{CM}}/api/v1/spaces/default/instances?select=hostname,id",
+            "method": "GET",
+            "sortNum": 10625,
+            "created": "2024-01-24T21:41:32.454Z",
+            "modified": "2024-03-06T19:32:03.902Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                }
+            ],
+            "params": [
+                {
+                    "name": "select",
+                    "value": "hostname,id",
+                    "isPath": false
+                }
+            ],
+            "reqType": "get",
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ],
+            "postReq": {
+                "inlineScripts": [
+                    {
+                        "script": [
+                            "var resp = tc.response.json;",
+                            "tc.setVar(\"bigip-instance-id\", resp._embedded.devices[0].id);"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "499a3729-b58e-459e-82a8-b028cf68afd3",
+            "colId": "1924ff3a-8b4b-43c5-ab82-4925be76ba47",
+            "containerId": "71dfaa6e-f134-44e8-affa-c6b119d1dde3",
+            "name": "Create SSLO Inspection Service - TAP-VLAN",
+            "url": "{{CM}}/api/v1/spaces/default/security/inspection-services",
+            "method": "POST",
+            "sortNum": 11250,
+            "created": "2024-01-24T21:41:32.448Z",
+            "modified": "2024-03-06T19:28:06.994Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"my-sslo-tap\",\n  \"description\": \"My SSLO Tap Inspection Service\",\n  \"type\": \"tap-vlan\",\n  \"network\": {\n    \"vlan\": \"sslo-insp-tap\"\n  }\n}",
+                "form": []
+            },
+            "reqType": "post",
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ],
+            "postReq": {
+                "inlineScripts": [
+                    {
+                        "script": [
+                            "var resp = tc.response.json;",
+                            "tc.setVar(\"insp-service-id\", resp.id);"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "d62e9397-086d-44d2-8734-5b34771f876a",
+            "colId": "1924ff3a-8b4b-43c5-ab82-4925be76ba47",
+            "containerId": "71dfaa6e-f134-44e8-affa-c6b119d1dde3",
+            "name": "Create SSLO Inspection Service - ICAP",
+            "url": "{{CM}}/api/v1/spaces/default/security/inspection-services",
+            "method": "POST",
+            "sortNum": 11562.5,
+            "created": "2024-03-06T18:30:06.302Z",
+            "modified": "2024-03-06T19:28:12.907Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"my-sslo-icap\",\n  \"description\": \"My SSLO ICAP Inspection Service\",\n  \"type\": \"icap\",\n  \"requestModificationURI\": \"avscan\",\n  \"responseModificationURI\": \"avscan\",\n  \"oneConnect\": { \"sourceMask\": \"0.0.0.0\" },\n  \"serviceDownAction\": \"ignore\",\n  \"network\": {\n    \"vlan\": \"sslo-insp-icap\",\n    \"endpoints\": [\n      {\n        \"address\": \"198.19.97.50:1344\"\n      }\n    ]\n  }\n}",
+                "form": []
+            },
+            "reqType": "post",
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ],
+            "postReq": {
+                "inlineScripts": [
+                    {
+                        "script": [
+                            "var resp = tc.response.json;",
+                            "tc.setVar(\"insp-service-id\", resp.id);"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "b30c4505-a245-4d90-8bbf-243b3cdc28bd",
+            "colId": "1924ff3a-8b4b-43c5-ab82-4925be76ba47",
+            "containerId": "71dfaa6e-f134-44e8-affa-c6b119d1dde3",
+            "name": "Create SSLO Inspection Service - Inline L3",
+            "url": "{{CM}}/api/v1/spaces/default/security/inspection-services",
+            "method": "POST",
+            "sortNum": 11718.8,
+            "created": "2024-03-06T18:51:05.748Z",
+            "modified": "2024-03-06T20:26:18.094Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"my-sslo-ngfw\",\n  \"description\": \"My SSLO L3 Inspection Service\",\n  \"type\": \"l3\",\n  \"serviceDownAction\": \"ignore\",\n  \"to\": {\n    \"network\": {\n      \"vlan\": \"sslo-insp-l3-in\",\n      \"endpoints\": [\n        {\n          \"address\": \"198.19.64.30:0\"\n        }\n      ],\n      \"snat\": {\n        \"snatType\": \"AUTOMAP\"\n      }\n    },\n    \"monitor\": {\n      \"icmp\": {\n        \"interval\": 5,\n        \"timeout\": 16\n      }\n    }\n  },\n  \"from\": {\n    \"network\": {\n      \"vlan\": \"sslo-insp-l3-out\"\n    }\n  }\n}",
+                "form": []
+            },
+            "reqType": "post",
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ],
+            "postReq": {
+                "inlineScripts": [
+                    {
+                        "script": [
+                            "var resp = tc.response.json;",
+                            "tc.setVar(\"insp-service-id\", resp.id);"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "68906076-7002-46ba-81ea-a75569dee298",
+            "colId": "1924ff3a-8b4b-43c5-ab82-4925be76ba47",
+            "containerId": "71dfaa6e-f134-44e8-affa-c6b119d1dde3",
+            "name": "Create SSLO Inspection Service - HTTP Transparent",
+            "url": "{{CM}}/api/v1/spaces/default/security/inspection-services",
+            "method": "POST",
+            "sortNum": 11796.9,
+            "created": "2024-03-06T20:49:38.048Z",
+            "modified": "2024-03-06T20:50:18.202Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"my-sslo-tproxy\",\n  \"description\": \"My SSLO HTTP Transparent Service\",\n  \"type\": \"http-transparent\",\n  \"serviceDownAction\": \"ignore\",\n  \"to\": {\n    \"network\": {\n      \"vlan\": \"sslo-insp-tproxy-in\",\n      \"endpoints\": [\n        {\n          \"address\": \"198.19.98.30:0\"\n        }\n      ],\n      \"snat\": {\n        \"snatType\": \"NONE\"\n      }\n    },\n    \"monitor\": {\n      \"icmp\": {\n        \"interval\": 5,\n        \"timeout\": 16\n      }\n    }\n  },\n  \"from\": {\n    \"network\": {\n      \"vlan\": \"sslo-insp-tproxy-out\"\n    }\n  }\n}",
+                "form": []
+            },
+            "reqType": "post",
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ],
+            "postReq": {
+                "inlineScripts": [
+                    {
+                        "script": [
+                            "var resp = tc.response.json;",
+                            "tc.setVar(\"insp-service-id\", resp.id);"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "f87249e5-31a2-4bb3-b4ba-6c466aa13fe0",
+            "colId": "1924ff3a-8b4b-43c5-ab82-4925be76ba47",
+            "containerId": "71dfaa6e-f134-44e8-affa-c6b119d1dde3",
+            "name": "Create SSLO Inspection Service - HTTP Explicit",
+            "url": "{{CM}}/api/v1/spaces/default/security/inspection-services",
+            "method": "POST",
+            "sortNum": 11836,
+            "created": "2024-03-06T20:57:37.151Z",
+            "modified": "2024-03-06T21:03:52.703Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"my-sslo-eproxy\",\n  \"description\": \"My SSLO HTTP Explicit Service\",\n  \"type\": \"http-explicit\",\n  \"serviceDownAction\": \"ignore\",\n  \"to\": {\n    \"network\": {\n      \"vlan\": \"sslo-insp-eproxy-in\",\n      \"endpoints\": [\n        {\n          \"address\": \"198.19.96.30:3128\"\n        }\n      ],\n      \"snat\": {\n        \"snatType\": \"NONE\"\n      }\n    },\n    \"monitor\": {\n      \"icmp\": {\n        \"interval\": 5,\n        \"timeout\": 16\n      }\n    }\n  },\n  \"from\": {\n    \"network\": {\n      \"vlan\": \"sslo-insp-eproxy-out\"\n    }\n  }\n}",
+                "form": []
+            },
+            "reqType": "post",
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ],
+            "postReq": {
+                "inlineScripts": [
+                    {
+                        "script": [
+                            "var resp = tc.response.json;",
+                            "tc.setVar(\"insp-service-id\", resp.id);"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "9882ef4e-aaf0-4a4b-8f77-8753c3f3946a",
+            "colId": "1924ff3a-8b4b-43c5-ab82-4925be76ba47",
+            "containerId": "71dfaa6e-f134-44e8-affa-c6b119d1dde3",
+            "name": "Deploy SSLO Inspection Service",
+            "url": "{{CM}}/api/v1/spaces/default/security/inspection-services/{{insp-service-id}}/deployment",
+            "method": "POST",
+            "sortNum": 11875,
+            "created": "2024-01-24T21:41:32.453Z",
+            "modified": "2024-03-06T19:30:27.380Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"deploy-instances\": [\n    \"{{bigip-instance-id}}\"\n  ],\n  \"undeploy-instances\": []\n}",
+                "form": []
+            },
+            "reqType": "post",
+            "tests": []
+        },
+        {
+            "_id": "ff9e3b71-07e2-4067-bd3d-a5bcf435fce3",
+            "colId": "1924ff3a-8b4b-43c5-ab82-4925be76ba47",
+            "containerId": "71dfaa6e-f134-44e8-affa-c6b119d1dde3",
+            "name": "Get SSLO Inspection Services",
+            "url": "{{CM}}/api/v1/spaces/default/security/inspection-services?select=name,id",
+            "method": "GET",
+            "sortNum": 12500,
+            "created": "2024-01-24T21:41:32.447Z",
+            "modified": "2024-01-24T21:41:32.447Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                }
+            ],
+            "params": [
+                {
+                    "name": "select",
+                    "value": "name,id",
+                    "isPath": false
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "201f0197-da7f-4649-a3a2-11572d8c7b66",
+            "colId": "1924ff3a-8b4b-43c5-ab82-4925be76ba47",
+            "containerId": "63c3de3d-3d90-43de-bd0b-f0ce4fe128ad",
+            "name": "GET Certificate and Key Info",
+            "url": "{{CM}}/api/v1/spaces/default/certificates",
+            "method": "GET",
+            "sortNum": 15000,
+            "created": "2024-01-24T21:41:32.437Z",
+            "modified": "2024-01-24T21:41:32.437Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "07497b81-89f0-4065-b156-859c28120c25",
+            "colId": "1924ff3a-8b4b-43c5-ab82-4925be76ba47",
+            "containerId": "71dfaa6e-f134-44e8-affa-c6b119d1dde3",
+            "name": "Create SSLO Service Chain",
+            "url": "{{CM}}/api/v1/spaces/default/security/service-chains",
+            "method": "POST",
+            "sortNum": 15000,
+            "created": "2024-01-24T21:41:32.446Z",
+            "modified": "2024-02-01T20:41:25.304Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"my-api-service-chain\",\n  \"inspection_services\": [\n    \"[add inspection-service-id here]\"\n  ]\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ],
+            "docs": "The basic requirements for creating a service chain are:\n\n* name --> string\n* inspection_services --> array of inspection service IDs\n\n\n\nThe inspection service IDs can be retrieved via the following:\n\n{{CM}}/api/v1/spaces/default/security/inspection-services?select=name,id",
+            "postReq": {
+                "inlineScripts": [
+                    {
+                        "script": [
+                            "var resp = tc.response.json;",
+                            "tc.setVar(\"as3_document_id\", resp.id);"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "dc55e5af-c370-4d63-bd2a-6f22e5f3f753",
+            "colId": "1924ff3a-8b4b-43c5-ab82-4925be76ba47",
+            "containerId": "71dfaa6e-f134-44e8-affa-c6b119d1dde3",
+            "name": "Get SSLO Service Chains",
+            "url": "{{CM}}/api/v1/spaces/default/security/service-chains?select=name,id",
+            "method": "GET",
+            "sortNum": 16250,
+            "created": "2024-01-24T21:41:32.451Z",
+            "modified": "2024-01-24T21:41:32.451Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                }
+            ],
+            "params": [
+                {
+                    "name": "select",
+                    "value": "name,id",
+                    "isPath": false
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "6e7ead00-16c9-4a1e-8954-da0daae9cab6",
+            "colId": "1924ff3a-8b4b-43c5-ab82-4925be76ba47",
+            "containerId": "71dfaa6e-f134-44e8-affa-c6b119d1dde3",
+            "name": "Create SSLO Policy - Inbound App",
+            "url": "{{CM}}/api/v1/spaces/default/security/policies",
+            "method": "POST",
+            "sortNum": 17500,
+            "created": "2024-01-24T21:41:32.450Z",
+            "modified": "2024-02-01T20:41:46.239Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"policyName\": \"my-api-policy\",\n  \"policyType\": \"default\",\n  \"trafficRuleSets\": [\n    {\n      \"ruleType\": \"traffic\",\n      \"rules\": [\n        {\n          \"name\": \"rule1\",\n          \"conditions\": [\n            {\n              \"conditionType\": \"SSL_EXTENSION_SERVERNAME\",\n              \"operator\": \"equals\",\n              \"values\": [\n                \"test.f5labs.com\"\n              ]\n            }\n          ],\n          \"actions\": [\n            {\n              \"actionType\": \"SSL_PROXY_BYPASS\"\n            },\n            {\n              \"actionType\": \"SERVICE_CHAIN\",\n              \"serviceChain\": \"[add service-chain-id here]\"\n            }\n          ]\n        },\n        {\n          \"name\": \"All Traffic\",\n          \"conditions\": [],\n          \"actions\": [\n            {\n              \"actionType\": \"SSL_PROXY_INTERCEPT\"\n            },\n            {\n              \"actionType\": \"SERVICE_CHAIN\",\n              \"serviceChain\": \"[add service-chain-id here]\"\n            }\n          ]\n        }\n      ]\n    }\n  ],\n  \"loggingRuleSets\": [\n    {\n      \"ruleType\": \"logging\",\n      \"rules\": [\n        {\n          \"name\": \"all-logging\",\n          \"conditions\": [\n            {\n              \"conditionType\": \"L4_PORT\",\n              \"operator\": \"equals\",\n              \"values\": [\n                443\n              ],\n              \"local\": true\n            }\n          ],\n          \"actions\": [\n            {\n              \"actionType\": \"COLLECT_DATA\"\n            }\n          ]\n        }\n      ]\n    }\n  ]\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ],
+            "postReq": {
+                "inlineScripts": [
+                    {
+                        "script": [
+                            "var resp = tc.response.json;",
+                            "tc.setVar(\"as3_document_id\", resp.id);"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "80ab6924-f675-4b68-8c64-c3bfdb66c376",
+            "colId": "1924ff3a-8b4b-43c5-ab82-4925be76ba47",
+            "containerId": "71dfaa6e-f134-44e8-affa-c6b119d1dde3",
+            "name": "Get SSLO Policies",
+            "url": "{{CM}}/api/v1/spaces/default/security/policies?select=name,id",
+            "method": "GET",
+            "sortNum": 18750,
+            "created": "2024-01-24T21:41:32.452Z",
+            "modified": "2024-01-24T21:41:32.452Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                }
+            ],
+            "params": [
+                {
+                    "name": "select",
+                    "value": "name,id",
+                    "isPath": false
+                }
+            ],
+            "tests": []
+        },
+        {
+            "_id": "885b0958-3666-4a1d-bcd5-83df907899d9",
+            "colId": "1924ff3a-8b4b-43c5-ab82-4925be76ba47",
+            "containerId": "96dafd3b-2aec-429b-8282-a333df9a0030",
+            "name": "Create CM Application",
+            "url": "{{CM}}/api/v1/spaces/default/appsvcs/documents",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2024-01-24T21:41:32.429Z",
+            "modified": "2024-01-24T21:41:32.429Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"class\": \"ADC\",\n  \"id\": \"adc-canonical\",\n  \"schemaVersion\": \"3.43.0\",\n  \"my_tenant\": {\n    \"class\": \"Tenant\",\n    \"my_app\": {\n      \"class\": \"Application\",\n      \"my_server_tls\": {\n        \"class\": \"TLS_Server\",\n        \"certificates\": [\n          {\n            \"certificate\": \"webcert\"\n          }\n        ],\n        \"ciphers\": \"DEFAULT\",\n        \"tls1_1Enabled\": true,\n        \"tls1_2Enabled\": true,\n        \"tls1_3Enabled\": false\n      },\n      \"my_client_tls\": {\n        \"class\": \"TLS_Client\",\n        \"ciphers\": \"DEFAULT\",\n        \"tls1_1Enabled\": true,\n        \"tls1_2Enabled\": true,\n        \"tls1_3Enabled\": false\n      },\n      \"my_pool\": {\n        \"class\": \"Pool\",\n        \"loadBalancingMode\": \"round-robin\",\n        \"members\": [\n          {\n            \"serverAddresses\": [\n              \"192.168.100.11\",\n              \"192.168.100.12\",\n              \"192.168.100.13\"\n            ],\n            \"servicePort\": 443\n          }\n        ],\n        \"monitors\": []\n      },\n      \"my_pool_service\": {\n        \"class\": \"Service_Pool\",\n        \"pool\": \"my_pool\"\n      },\n      \"my_service\": {\n        \"class\": \"Service_HTTPS\",\n         \"allowNetworks\": [\n          {\n            \"bigip\": \"Default L3-Network\"\n          }\n        ],\n        \"persistenceMethods\": [],\n        \"clientTLS\": \"my_client_tls\",\n        \"pool\": \"my_pool\",\n        \"serverTLS\": \"my_server_tls\",\n        \"snat\": \"auto\",\n        \"virtualAddresses\": [\n          \"10.1.10.24\"\n        ],\n        \"virtualPort\": 443\n      },\n      \"webcert\": {\n        \"class\": \"Certificate\",\n        \"certificate\": {\n          \"cm\": \"wildcard.f5labs.com.crt\"\n        },\n        \"privateKey\": {\n          \"cm\": \"wildcard.f5labs.com.pem\"\n        }\n      }\n    }\n  }\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ],
+            "postReq": {
+                "inlineScripts": [
+                    {
+                        "script": [
+                            "var resp = tc.response.json;",
+                            "tc.setVar(\"as3_document_id\", resp.id);"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "92fde2b8-809d-4e67-ad1b-0708be5e2197",
+            "colId": "1924ff3a-8b4b-43c5-ab82-4925be76ba47",
+            "containerId": "71dfaa6e-f134-44e8-affa-c6b119d1dde3",
+            "name": "Create SSLO Application",
+            "url": "{{CM}}/api/v1/spaces/default/appsvcs/documents",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2024-01-24T21:41:32.444Z",
+            "modified": "2024-01-24T21:41:32.444Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"class\": \"ADC\",\n  \"id\": \"adc-canonical\",\n  \"schemaVersion\": \"3.43.0\",\n  \"my_tenant\": {\n    \"class\": \"Tenant\",\n    \"my_app\": {\n      \"class\": \"Application\",\n      \"my_server_tls\": {\n        \"class\": \"TLS_Server\",\n        \"certificates\": [\n          {\n            \"certificate\": \"webcert\"\n          }\n        ],\n        \"ciphers\": \"DEFAULT\",\n        \"tls1_1Enabled\": true,\n        \"tls1_2Enabled\": true,\n        \"tls1_3Enabled\": false\n      },\n      \"my_client_tls\": {\n        \"class\": \"TLS_Client\",\n        \"ciphers\": \"DEFAULT\",\n        \"tls1_1Enabled\": true,\n        \"tls1_2Enabled\": true,\n        \"tls1_3Enabled\": false\n      },\n      \"my_pool\": {\n        \"class\": \"Pool\",\n        \"loadBalancingMode\": \"round-robin\",\n        \"members\": [\n          {\n            \"serverAddresses\": [\n              \"192.168.100.11\",\n              \"192.168.100.12\",\n              \"192.168.100.13\"\n            ],\n            \"servicePort\": 443\n          }\n        ],\n        \"monitors\": [\n          \"https\"\n        ]\n      },\n      \"my_pool_service\": {\n        \"class\": \"Service_Pool\",\n        \"pool\": \"my_pool\"\n      },\n      \"my_service\": {\n        \"class\": \"Service_HTTPS\",\n         \"allowNetworks\": [\n          {\n            \"bigip\": \"Default L3-Network\"\n          }\n        ],\n        \"persistenceMethods\": [],\n        \"policySslOrchestrator\": {\n          \"cm\": \"my-api-policy\"\n        },\n        \"clientTLS\": \"my_client_tls\",\n        \"pool\": \"my_pool\",\n        \"serverTLS\": \"my_server_tls\",\n        \"snat\": \"auto\",\n        \"virtualAddresses\": [\n          \"10.1.10.22\"\n        ],\n        \"virtualPort\": 443\n      },\n      \"webcert\": {\n        \"class\": \"Certificate\",\n        \"certificate\": {\n          \"cm\": \"wildcard.f5labs.com.crt\"\n        },\n        \"privateKey\": {\n          \"cm\": \"wildcard.f5labs.com.pem\"\n        }\n      }\n    }\n  }\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ],
+            "postReq": {
+                "inlineScripts": [
+                    {
+                        "script": [
+                            "var resp = tc.response.json;",
+                            "tc.setVar(\"as3_document_id\", resp.id);"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "a4854152-af7f-40ea-89a9-6a81f1d54cb7",
+            "colId": "1924ff3a-8b4b-43c5-ab82-4925be76ba47",
+            "containerId": "0af94160-504f-4269-8917-7183dedee97a",
+            "name": "Delete the Application",
+            "url": "{{CM}}/api/v1/spaces/default/appsvcs/documents/{{my_document_id}}",
+            "method": "DELETE",
+            "sortNum": 20000,
+            "created": "2024-01-24T21:41:32.458Z",
+            "modified": "2024-01-24T21:41:32.458Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "cc91848f-95c9-4e4f-979b-958c9e4aaff3",
+            "colId": "1924ff3a-8b4b-43c5-ab82-4925be76ba47",
+            "containerId": "0af94160-504f-4269-8917-7183dedee97a",
+            "name": "Get SSLO Policies",
+            "url": "{{CM}}/api/v1/spaces/default/security/policies?select=name,id",
+            "method": "GET",
+            "sortNum": 25000,
+            "created": "2024-01-24T21:41:32.461Z",
+            "modified": "2024-01-24T21:41:32.461Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                }
+            ],
+            "params": [
+                {
+                    "name": "select",
+                    "value": "name,id",
+                    "isPath": false
+                }
+            ],
+            "tests": [],
+            "postReq": {
+                "inlineScripts": [
+                    {
+                        "script": [
+                            "var resp = tc.response.json;",
+                            "tc.setVar(\"my_policy_id\", resp._embedded.policies[0].id);"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "381f2983-b11a-4b0b-9734-042b2497a4ce",
+            "colId": "1924ff3a-8b4b-43c5-ab82-4925be76ba47",
+            "containerId": "96dafd3b-2aec-429b-8282-a333df9a0030",
+            "name": "Deploy Application to Instance",
+            "url": "{{CM}}/api/v1/spaces/default/appsvcs/documents/{{as3_document_id}}/deployments",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2024-01-24T21:41:32.430Z",
+            "modified": "2024-01-24T21:41:32.430Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"target\": \"{{Next}}\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "d32f6424-691f-4427-bfe2-28e162a2dc88",
+            "colId": "1924ff3a-8b4b-43c5-ab82-4925be76ba47",
+            "containerId": "71dfaa6e-f134-44e8-affa-c6b119d1dde3",
+            "name": "Deploy Application to Instance",
+            "url": "{{CM}}/api/v1/spaces/default/appsvcs/documents/{{as3_document_id}}/deployments",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2024-01-24T21:41:32.445Z",
+            "modified": "2024-01-24T21:41:32.445Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"target\": \"{{Next}}\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "d0cf5ebd-b88c-44af-9f5f-280a59b4a516",
+            "colId": "1924ff3a-8b4b-43c5-ab82-4925be76ba47",
+            "containerId": "0af94160-504f-4269-8917-7183dedee97a",
+            "name": "Delete the SSLO Policy",
+            "url": "{{CM}}/api/v1/spaces/default/security/policies/{{my_policy_id}}",
+            "method": "DELETE",
+            "sortNum": 30000,
+            "created": "2024-01-24T21:41:32.460Z",
+            "modified": "2024-01-24T21:41:32.460Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "95fe9160-f144-4218-8908-79f45711cdc6",
+            "colId": "1924ff3a-8b4b-43c5-ab82-4925be76ba47",
+            "containerId": "96dafd3b-2aec-429b-8282-a333df9a0030",
+            "name": "Get App & Deployment",
+            "url": "{{CM}}/api/v1/spaces/default/appsvcs/documents",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2024-01-24T21:41:32.431Z",
+            "modified": "2024-01-24T21:41:32.431Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                }
+            ],
+            "params": [],
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ],
+            "postReq": {
+                "inlineScripts": [
+                    {
+                        "script": [
+                            "var resp = tc.response.json;",
+                            "tc.setVar(\"my_as3_document_id\", resp._embedded.appsvcs[0].id);",
+                            "tc.setVar(\"my_as3_deployment_id\", resp._embedded.appsvcs[0].deployments[0].id);"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "a431c39f-ece6-425b-b703-a7e1f24dfeaa",
+            "colId": "1924ff3a-8b4b-43c5-ab82-4925be76ba47",
+            "containerId": "71dfaa6e-f134-44e8-affa-c6b119d1dde3",
+            "name": "Update SSLO Policy - Inbound App",
+            "url": "{{CM}}/api/v1/spaces/default/security/policies/[add policy-id here]",
+            "method": "PUT",
+            "sortNum": 40000,
+            "created": "2024-01-24T21:41:32.455Z",
+            "modified": "2024-02-01T20:43:11.397Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"policyName\": \"my-api-policy\",\n  \"policyType\": \"default\",\n  \"trafficRuleSets\": [\n    {\n      \"ruleType\": \"traffic\",\n      \"rules\": [\n        {\n          \"name\": \"rule1\",\n          \"conditions\": [\n            {\n              \"conditionType\": \"SSL_EXTENSION_SERVERNAME\",\n              \"operator\": \"equals\",\n              \"values\": [\n                \"test.f5labs.com\"\n              ]\n            }\n          ],\n          \"actions\": [\n            {\n              \"actionType\": \"SSL_PROXY_BYPASS\"\n            },\n            {\n              \"actionType\": \"SERVICE_CHAIN\",\n              \"serviceChain\": \"[add service-chain-id here]\"\n            }\n          ]\n        },\n        {\n          \"name\": \"All Traffic\",\n          \"conditions\": [],\n          \"actions\": [\n            {\n              \"actionType\": \"SSL_PROXY_INTERCEPT\"\n            },\n            {\n              \"actionType\": \"SERVICE_CHAIN\",\n              \"serviceChain\": \"[add service-chain-id here]\"\n            }\n          ]\n        }\n      ]\n    }\n  ],\n  \"loggingRuleSets\": [\n    {\n      \"ruleType\": \"logging\",\n      \"rules\": [\n        {\n          \"name\": \"all-logging\",\n          \"conditions\": [\n            {\n              \"conditionType\": \"IP_PROTOCOL\",\n              \"operator\": \"equals\",\n              \"values\": [\n                6\n              ]\n            }\n          ],\n          \"actions\": [\n            {\n              \"actionType\": \"COLLECT_DATA\"\n            }\n          ]\n        }\n      ]\n    }\n  ]\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ],
+            "postReq": {
+                "inlineScripts": [
+                    {
+                        "script": [
+                            "var resp = tc.response.json;",
+                            "tc.setVar(\"as3_document_id\", resp.id);"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "8f96f20f-7dbe-4387-90d5-f31ab610a23c",
+            "colId": "1924ff3a-8b4b-43c5-ab82-4925be76ba47",
+            "containerId": "0af94160-504f-4269-8917-7183dedee97a",
+            "name": "Get the SSLO Service Chain",
+            "url": "{{CM}}/api/v1/spaces/default/security/service-chains?select=name,id",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2024-01-24T21:41:32.463Z",
+            "modified": "2024-01-24T21:41:32.463Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                }
+            ],
+            "params": [
+                {
+                    "name": "select",
+                    "value": "name,id",
+                    "isPath": false
+                }
+            ],
+            "tests": [],
+            "postReq": {
+                "inlineScripts": [
+                    {
+                        "script": [
+                            "var resp = tc.response.json;",
+                            "tc.setVar(\"my_servicechain_id\", resp._embedded.service_chains[0].id);"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "d5cab606-c0dd-4c15-960e-02bf3de02173",
+            "colId": "1924ff3a-8b4b-43c5-ab82-4925be76ba47",
+            "containerId": "96dafd3b-2aec-429b-8282-a333df9a0030",
+            "name": "Delete Instance Deployment",
+            "url": "{{CM}}/api/v1/spaces/default/appsvcs/documents/{{my_as3_document_id}}/deployments/{{my_as3_deployment_id}}",
+            "method": "DELETE",
+            "sortNum": 50000,
+            "created": "2024-01-24T21:41:32.432Z",
+            "modified": "2024-01-24T21:41:32.432Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "68b19cd4-3942-4b8e-86b9-75bee135c2a3",
+            "colId": "1924ff3a-8b4b-43c5-ab82-4925be76ba47",
+            "containerId": "71dfaa6e-f134-44e8-affa-c6b119d1dde3",
+            "name": "Deploy Updated SSLO Policy",
+            "url": "{{CM}}/api/v1/spaces/default/security/ssl-orchestrator-policies/[add policy-id here]/deploy",
+            "method": "POST",
+            "sortNum": 50000,
+            "created": "2024-01-24T21:41:32.456Z",
+            "modified": "2024-02-01T20:44:16.337Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ],
+            "postReq": {
+                "inlineScripts": [
+                    {
+                        "script": [
+                            "var resp = tc.response.json;",
+                            "tc.setVar(\"as3_document_id\", resp.id);"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "2c1ed372-9791-4697-b931-74da68baf699",
+            "colId": "1924ff3a-8b4b-43c5-ab82-4925be76ba47",
+            "containerId": "0af94160-504f-4269-8917-7183dedee97a",
+            "name": "Delete the SSLO Service Chain",
+            "url": "{{CM}}/api/v1/spaces/default/security/service-chains/{{my_servicechain_id}}",
+            "method": "DELETE",
+            "sortNum": 50000,
+            "created": "2024-01-24T21:41:32.464Z",
+            "modified": "2024-01-24T21:41:32.464Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "26a05e5e-9392-4f74-be85-ae6556e66bb7",
+            "colId": "1924ff3a-8b4b-43c5-ab82-4925be76ba47",
+            "containerId": "0af94160-504f-4269-8917-7183dedee97a",
+            "name": "Get BIG-IP Instances",
+            "url": "{{CM}}/api/v1/spaces/default/instances?select=hostname,id",
+            "method": "GET",
+            "sortNum": 55000,
+            "created": "2024-01-24T21:41:32.466Z",
+            "modified": "2024-01-24T21:41:32.466Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                }
+            ],
+            "params": [
+                {
+                    "name": "select",
+                    "value": "hostname,id",
+                    "isPath": false
+                }
+            ],
+            "tests": [
+                {
+                    "type": "res-code",
+                    "custom": "",
+                    "action": "equal",
+                    "value": "200"
+                }
+            ],
+            "postReq": {
+                "inlineScripts": [
+                    {
+                        "script": [
+                            "var resp = tc.response.json;",
+                            "tc.setVar(\"my_instance_id\", resp._embedded.devices[0].id);"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "681cc404-8268-4e48-ba3a-4ebd3c07df8d",
+            "colId": "1924ff3a-8b4b-43c5-ab82-4925be76ba47",
+            "containerId": "0af94160-504f-4269-8917-7183dedee97a",
+            "name": "Get the SSLO Inspection Services",
+            "url": "{{CM}}/api/v1/spaces/default/security/inspection-services?select=name,id",
+            "method": "GET",
+            "sortNum": 57500,
+            "created": "2024-01-24T21:41:32.467Z",
+            "modified": "2024-01-24T21:41:32.467Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                }
+            ],
+            "params": [
+                {
+                    "name": "select",
+                    "value": "name,id",
+                    "isPath": false
+                }
+            ],
+            "tests": [],
+            "postReq": {
+                "inlineScripts": [
+                    {
+                        "script": [
+                            "var resp = tc.response.json;",
+                            "tc.setVar(\"my_inspectionservice_id\", resp._embedded.inspection_services[0].id);"
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "_id": "c870a1b1-24d8-490a-b35c-c5701aafcb9f",
+            "colId": "1924ff3a-8b4b-43c5-ab82-4925be76ba47",
+            "containerId": "96dafd3b-2aec-429b-8282-a333df9a0030",
+            "name": "Delete CM Application",
+            "url": "{{CM}}/api/v1/spaces/default/appsvcs/documents/{{my_as3_document_id}}",
+            "method": "DELETE",
+            "sortNum": 60000,
+            "created": "2024-01-24T21:41:32.433Z",
+            "modified": "2024-01-24T21:41:32.433Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "6d3d0fdc-53ef-4ffa-a5d6-451ae51f441d",
+            "colId": "1924ff3a-8b4b-43c5-ab82-4925be76ba47",
+            "containerId": "0af94160-504f-4269-8917-7183dedee97a",
+            "name": "Un-Deploy SSLO Inspection Service",
+            "url": "{{CM}}/api/v1/spaces/default/security/inspection-services/{{my_inspectionservice_id}}/deployment",
+            "method": "POST",
+            "sortNum": 60000,
+            "created": "2024-01-24T21:41:32.465Z",
+            "modified": "2024-01-24T21:41:32.465Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"deploy-instances\": [],\n  \"undeploy-instances\": [\n    \"{{my_instance_id}}\"  \n  ]\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "e9f73c07-c57c-4b8a-b7d4-e8fa1f8dec1a",
+            "colId": "1924ff3a-8b4b-43c5-ab82-4925be76ba47",
+            "containerId": "0af94160-504f-4269-8917-7183dedee97a",
+            "name": "Delete the SSLO Inspection Service",
+            "url": "{{CM}}/api/v1/spaces/default/security/inspection-services/{{my_inspectionservice_id}}",
+            "method": "DELETE",
+            "sortNum": 70000,
+            "created": "2024-01-24T21:41:32.468Z",
+            "modified": "2024-01-24T21:41:32.468Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "Bearer {{authToken}}"
+                }
+            ],
+            "params": [],
+            "tests": []
+        }
+    ],
+    "settings": {
+        "headers": [
+            {
+                "name": "Content-Type",
+                "value": "application/json"
+            }
+        ],
+        "envId": "fed624aa-ab65-4259-8b2c-ffff7868d332"
+    }
+}
