@@ -80,5 +80,40 @@ policy_id=$(curl -sk -H "Authorization: Bearer ${token}" -H "Content-Type: appli
 
 ${\normalsize{\textsf{\color{white}===}}}$
 
-${\large{\textbf{\textsf{\color{red}API\ Reference}}}}$
+${\large{\textbf{\textsf{\color{red}API\ Reference:\ Policy\ Block}}}}$
+
+| Required | Attribute                 | Defaults | Notes                                                      |
+|:--------:|---------------------------|:--------:|------------------------------------------------------------|
+|     *    | policyName                |   none   | string: policy-name                                        |
+|     *    | policyType                |   none   | "default" for inbound app policy, or "inbound-gateway"     |
+|     *    | trafficRuleSets           |   none   | a dictionary of one element containing rules and ruleType  |
+|     *    | trafficRuleSets: ruleType |   none   | must be "traffic"                                          |
+|     *    | trafficRuleSets: rules    |   none   | dictionary of all traffic rules                            |
+
+
+${\normalsize{\textsf{\color{white}===}}}$
+
+${\large{\textbf{\textsf{\color{red}API\ Reference:\ TrafficRuleSets\ Rules}}}}$
+
+| Required | Attribute  | Defaults | Notes                            |
+|:--------:|------------|:--------:|----------------------------------|
+|     *    | name       |   none   | string: rule-name                |
+|     *    | conditions |   none   | dictionary of traffic conditions |
+|     *    | actions    |   none   | dictionary of actions            |
+
+
+${\normalsize{\textsf{\color{white}===}}}$
+
+${\large{\textbf{\textsf{\color{red}API\ Reference:\ TrafficRuleSets\ Rule\ Conditions}}}}$
+
+
+
+
+
+${\normalsize{\textsf{\color{white}===}}}$
+
+${\large{\textbf{\textsf{\color{red}API\ Reference:\ TrafficRuleSets\ Rule\ Actions}}}}$
+
+
+
 
