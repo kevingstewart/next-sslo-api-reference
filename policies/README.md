@@ -1,14 +1,12 @@
-## SSL Orchestrator Inbound Traffic Policies
+## SSL Orchestrator Policies
 
 ${\large{\textbf{\textsf{\color{red}Definition}}}}$
 
-A **Traffic Policy** is a set of rules that match traffic patterns. When a rule condition is matched, it assigns a set of actions to the matching flow, including:
+A **Policy** is a set of rules that match traffic patterns. When a rule condition is matched, it assigns a set of actions to the matching flow. A single SSL Orchestrator policy applied to an application can contain multiple "rulesets", including a traffic ruleset, logging ruleset, and potentially other types. All of the different rulesets will have similar traffic condition options, but take different actions. For example, the traffic ruleset can take the following actions:
 
 * Allowing or resetting the traffic
 * Intercepting (decrypting) or bypassing decryption
 * Assigning the flow to a service chain of inspection services
-
-Note that the single SSL Orchestrator policy applied to an application can contain multiple "rulesets", including a traffic ruleset, logging ruleset, and potentially other types. Traffic policies can match on any number of traffic conditions, including source/destination IP subnets, ports, hostnames, the IP protocol and version in use, etc. The inbound application and inbound gateway policies work the same way, so both are expressed here.
 
 ${\normalsize{\textsf{\color{white}===}}}$
 
@@ -56,12 +54,11 @@ ${\normalsize{\textsf{\color{white}===}}}$
 
 ${\large{\textbf{\textsf{\color{red}Create\ a\ Policy}}}}$
 
-SSL Orchestrator traffic policies have a robust and flexible workflow that requires one or more "rules". Each rule will then contain "conditions" (the traffic patterns to match on), and "actions" (the actions to take on a matching traffic condition).
+SSL Orchestrator policies have a robust and flexible workflow that requires one or more "rules". Each rule will then contain "conditions" (the traffic patterns to match on), and "actions" (the actions to take on a matching traffic condition).
 
-*Note that while Central Manager will create an "All Traffic" traffic rule by default, it is not created by default when using API to manage traffic policies. It is highly recommended to include an All Traffic rule in your traffic policy declarations **at the end of the policy** so that anything not matching other (higher) conditions will have some default actions.*
+*Note that while Central Manager will create an "All Traffic" traffic rule by default, it is not created by default when using API to manage traffic rules in a policy. It is highly recommended to include an All Traffic rule in your traffic ruleset declarations **at the end of the ruleset** so that anything not matching other (higher) conditions will have some default actions.*
 
-The below example provides the bare minimum policy declaration with only an All Traffic rule and no other rules. The below All Traffic rule has no conditions, but will allow (implied), SSL intercept, and pass to a service chain. Where it indicates [service-chain-id], replace this with a valid service-chain ID.
-The various traffic rule options are provided later in this document.
+The below example provides the bare minimum policy declaration with only an All Traffic rule and no other rules in a traffic ruleset. The below All Traffic rule has no conditions, but will allow (implied), SSL intercept, and pass to a service chain. Where it indicates [service-chain-id], replace this with a valid service-chain ID.
 
 **Basic**
 ```bash
@@ -200,9 +197,6 @@ EOF
 curl -sk -H "Authorization: Bearer ${token}" -H "Content-Type: application/json" -X PUT "https://${CM}/api/v1/spaces/default/security/policies/${policy_id}" -d "${POLICY}"
 ```
 
-${\normalsize{\textsf{\color{white}===}}}$
-
-${\large{\textbf{\textsf{\color{red}Traffic\ Policy\ Properties}}}}$
 
 
 
