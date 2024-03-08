@@ -8,6 +8,15 @@ A traffic ruleset in an SSL Orchestrator policy takes any number of traffic cond
 - Intercepting (decrypting) or bypassing decryption
 - Assigning the flow to a service chain of inspection services
 
+SSL Orchestrator policies possess the following structure and logic:
+
+- A policy contains one more rulesets, minimally containing a traffic ruleset, but potentially also a logging ruleset and others. Each ruleset can have similar traffic matching conditions, but will perform different actions.
+- Within a ruleset is one or more rules. The rules are processed top to bottom in a "first-match" strategy, meaning traffic is compared to each rule in the ruleset, starting from the top, until a match is made, and then stops.
+- Within a rule is one or more **conditions** (the properties of the traffic to match on), and one or more corresponding **actions** (the actions to take when the conditions are matched). The one exception is an "All Traffic" rule which will have no conditions. This would normally be placed at the bottom of a ruleset to catch any traffic that does not match any other rules.
+- Each rule can have one or more conditions, again except for the All Traffic rule. When there is more than one condition, a logical **AND** is applied. For example, if the conditions are "L4_PORT equals 443" and "IP_ADDRESS equals 10.0.0.0/8", then both of these must be true for the rule to match.
+- Each rule can have one or more actions. Like conditions, these are all additive.
+- Internally, traffic matching follows both the order of the rules and the "present" OSI layer (walking up the stack). For example, if an L4_PORT rule is placed at the top of the ruleset, then that traffic condition will be evaluated at OSI layer 4. However, if an SSL_EXTENSION_SERVERNAME rule is placed above the L4_PORT rule, then the L4_PORT will be evaluated at the SSL/TLS OSI layer (6), because this is the OSI layer needed to acquire the SNI value. It is not imperative to place the rules in a particular order, but you can gain some efficiencies by placing lower layer rules and conditions higher up in the ruleset.
+
 ___
 
 ${\large{\textbf{\textsf{\color{red}Create\ Inbound\ Policy\ Traffic\ Rulesets}}}}$
