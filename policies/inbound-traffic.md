@@ -134,9 +134,8 @@ ${\normalsize{\textsf{\color{white}===}}}$
 ${\large{\textbf{\textsf{\color{red}API\ Reference:\ TrafficRuleSets\ Rule\ Actions}}}}$
 
 
-
-<td style="height: 121px; width: 392px;">SNI Server Name match (data group)</td>
-</tr>
-</tbody>
-</table>
-
+|                 actionType                 | Example                                                                                           | Notes                                                                                                                          |
+|:------------------------------------------:|---------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
+|                    RESET                   | {<br /> &emsp;"actionType":"RESET",<br /> }                                                       | This actionType corresponds to the Flow Action. The default action is to **allow** traffic.                                    |
+| SSL_PROXY_INTERCEPT<br /> SSL_PROXY_BYPASS | {<br /> &emsp;"actionType":"SSL_PROXY_INTERCEPT",<br /> }                                         | This actionType corresponds to the SSL Action and determines TLS decryption or bypass.                                         |
+|                SERVICE_CHAIN               | {<br /> &emsp;"actionType":"SERVICE_CHAIN",<br /> &emsp;"serviceChain":Service-Chain-UUID<br /> } | This actionType corresponds to the Service Chain attribute and must additionally supply the ID value of a valid service chain. |
