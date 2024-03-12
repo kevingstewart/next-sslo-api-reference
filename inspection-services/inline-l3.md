@@ -222,7 +222,7 @@ ansible-playbook -i notahost, sslo-insp-tap.yaml --extra-vars "bigip_next_cm_mgm
       set_fact:
         bigip_id: "{{ json_response.json._embedded.devices | map(attribute='id') }}"
 
-    - name: Deploy SSLO TAP Inspection Service to BIG-IP Instance
+    - name: Deploy SSLO Inline L3 Inspection Service to BIG-IP Instance
       uri:
         url: https://{{ bigip_next_cm_mgmt_ip }}/api/v1/spaces/default/security/inspection-services/{{ insp_id }}/deployment
         method: POST
