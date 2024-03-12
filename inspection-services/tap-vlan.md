@@ -53,4 +53,121 @@ ${\large{\textbf{\textsf{\color{red}API\ Reference}}}}$
 |  | network: destinationMacAddress |  |  |
 
 
+${\normalsize{\textsf{\color{white}===}}}$
+
+${\large{\textbf{\textsf{\color{red}Ansible\ Reference}}}}$
+
+Execute with:
+```
+bigip_next_cm_mgmt_ip="10.1.1.6"
+bigip_next_password="my_password"
+ansible-playbook -i notahost, sslo-insp-tap.yaml --extra-vars "bigip_next_cm_mgmt_ip=$bigip_next_cm_mgmt_ip bigip_next_password=$bigip_next_password"
+```
+
+```yaml
+---
+- hosts: all
+  connection: local
+
+  tasks:
+    - name: Check if BIG-IP Next Central Manager instance is available (HTTPS responding 405 on /api/login)
+      uri:
+        url: https://{{ bigip_next_cm_mgmt_ip }}/api/login
+        method: GET
+        status_code: 405
+        validate_certs: false
+      until: json_response.status == 405
+      retries: 50
+      delay: 30
+      register: json_response
+
+    - name: Authenticate to BIG-IP Next CM API
+      uri:
+        url: https://{{ bigip_next_cm_mgmt_ip }}/api/login
+        method: POST
+        headers:
+          Content-Type: application/json
+        body: |
+          {
+              "username": "admin",
+              "password": "{{ bigip_next_password }}"
+          }
+        body_format: json
+        timeout: 60
+        status_code: 200
+        validate_certs: false
+      register: bigip_next_cm_token
+      retries: 30
+      delay: 30
+
+    - name: Set the BIG-IP Next CM token
+      set_fact:
+        bigip_next_cm_token: "{{ bigip_next_cm_token.json.access_token }}"
+    
+    - name: Create SSLO TAP Inspection Service
+      uri:
+        url: https://{{ bigip_next_cm_mgmt_ip }}/api/v1/spaces/default/security/inspection-services
+        method: POST
+        headers:
+          Authorization: "Bearer {{ bigip_next_cm_token }}"
+          Content-Type: application/json
+        body: |
+          {
+            "name": "my-sslo-tap",
+            "description": "My SSLO Tap Inspection Service",
+            "type": "tap-vlan",
+            "network": {
+              "vlan": "sslo-insp-tap"
+            }
+          }
+        body_format: json
+        timeout: 60
+        status_code: 200
+        validate_certs: false
+      register: json_response
+
+    - name: Set Inspection Service ID
+      set_fact:
+        insp_id: "{{ json_response.json.id}}"
+
+    - name: Get BIG-IP Next ID
+      uri:
+        url: https://{{ bigip_next_cm_mgmt_ip }}/api/v1/spaces/default/instances?filter=hostname+eq+%27bigip-next.f5labs.com%27&select=hostname,id
+        method: GET
+        headers:
+          Authorization: "Bearer {{ bigip_next_cm_token }}"
+          Content-Type: application/json
+        timeout: 60
+        status_code: 200
+        validate_certs: false
+      register: json_response
+
+    - name: Set BIG-IP Instance ID
+      set_fact:
+        bigip_id: "{{ json_response.json._embedded.devices | map(attribute='id') }}"
+
+    - name: Deploy SSLO TAP Inspection Service to BIG-IP Instance
+      uri:
+        url: https://{{ bigip_next_cm_mgmt_ip }}/api/v1/spaces/default/security/inspection-services/{{ insp_id }}/deployment
+        method: POST
+        headers:
+          Authorization: "Bearer {{ bigip_next_cm_token }}"
+          Content-Type: application/json
+        body: |
+          {
+            "deploy-instances": {{ bigip_id }},
+            "undeploy-instances": []
+          }
+        body_format: json
+        timeout: 60
+        status_code: 200
+        validate_certs: false
+      register: json_response
+
+    - debug:
+        var: json_response
+
+```
+
+
 
