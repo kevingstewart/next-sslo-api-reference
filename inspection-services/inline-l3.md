@@ -158,7 +158,7 @@ ansible-playbook -i notahost, sslo-insp-tap.yaml --extra-vars "bigip_next_cm_mgm
       set_fact:
         bigip_next_cm_token: "{{ bigip_next_cm_token.json.access_token }}"
     
-    - name: Create SSLO TAP Inspection Service
+    - name: Create SSLO Inline L3 Inspection Service
       uri:
         url: https://{{ bigip_next_cm_mgmt_ip }}/api/v1/spaces/default/security/inspection-services
         method: POST
