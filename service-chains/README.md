@@ -162,6 +162,7 @@ ansible-playbook -i notahost, sslo-service-chain.yaml --extra-vars "bigip_next_c
       delay: 30
       register: json_response
 
+
     - name: Authenticate to BIG-IP Next CM API
       uri:
         url: https://{{ bigip_next_cm_mgmt_ip }}/api/login
@@ -181,12 +182,15 @@ ansible-playbook -i notahost, sslo-service-chain.yaml --extra-vars "bigip_next_c
       retries: 30
       delay: 30
 
+
     - name: Set the BIG-IP Next CM token
       set_fact:
         bigip_next_cm_token: "{{ bigip_next_cm_token.json.access_token }}"
 
+
     - debug:
         var: bigip_next_cm_token
+
     
     - name: Get Inspection Services (filter by name: "my-sslo-tap")
       uri:
@@ -202,9 +206,11 @@ ansible-playbook -i notahost, sslo-service-chain.yaml --extra-vars "bigip_next_c
       retries: 30
       delay: 30
 
+
     - name: Set BIG-IP Instance ID
       set_fact:
         insp_ids: "{{ json_response.json._embedded.inspection_services | map(attribute='id') }}"
+
 
     - name: Create Service Chain (add filtered inspection services)
       uri:
@@ -225,6 +231,7 @@ ansible-playbook -i notahost, sslo-service-chain.yaml --extra-vars "bigip_next_c
       register: json_response
       retries: 30
       delay: 30
+
 
     - debug:
         var: json_response
