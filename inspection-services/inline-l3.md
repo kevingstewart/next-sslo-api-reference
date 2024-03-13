@@ -115,7 +115,7 @@ Execute with:
 ```
 bigip_next_cm_mgmt_ip="10.1.1.6"
 bigip_next_password="my_password"
-ansible-playbook -i notahost, sslo-insp-tap.yaml --extra-vars "bigip_next_cm_mgmt_ip=$bigip_next_cm_mgmt_ip bigip_next_password=$bigip_next_password"
+ansible-playbook -i notahost, sslo-insp-l3.yaml --extra-vars "bigip_next_cm_mgmt_ip=$bigip_next_cm_mgmt_ip bigip_next_password=$bigip_next_password"
 ```
 
 ```yaml
