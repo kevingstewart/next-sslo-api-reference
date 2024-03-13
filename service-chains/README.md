@@ -133,3 +133,99 @@ EOF
 )
 curl -sk -H "Authorization: Bearer ${token}" -H "Content-Type: application/json" -X PUT "https://${CM}/api/v1/spaces/default/security/service-chains/${chain_id}" -d "${CHAIN}"
 ```
+
+${\normalsize{\textsf{\color{white}===}}}$
+
+${\large{\textbf{\textsf{\color{red}Ansible\ Reference}}}}$
+
+Execute with:
+```
+bigip_next_cm_mgmt_ip="10.1.1.6"
+bigip_next_password="my_password"
+ansible-playbook -i notahost, sslo-service-chain.yaml --extra-vars "bigip_next_cm_mgmt_ip=$bigip_next_cm_mgmt_ip bigip_next_password=$bigip_next_password"
+```
+
+```yaml
+---
+- hosts: all
+  connection: local
+
+  tasks:
+    - name: Check if BIG-IP Next Central Manager instance is available (HTTPS responding 405 on /api/login)
+      uri:
+        url: https://{{ bigip_next_cm_mgmt_ip }}/api/login
+        method: GET
+        status_code: 405
+        validate_certs: false
+      until: json_response.status == 405
+      retries: 50
+      delay: 30
+      register: json_response
+
+    - name: Authenticate to BIG-IP Next CM API
+      uri:
+        url: https://{{ bigip_next_cm_mgmt_ip }}/api/login
+        method: POST
+        headers:
+          Content-Type: application/json
+        body: |
+          {
+              "username": "admin",
+              "password": "{{ bigip_next_password }}"
+          }
+        body_format: json
+        timeout: 60
+        status_code: 200
+        validate_certs: false
+      register: bigip_next_cm_token
+      retries: 30
+      delay: 30
+
+    - name: Set the BIG-IP Next CM token
+      set_fact:
+        bigip_next_cm_token: "{{ bigip_next_cm_token.json.access_token }}"
+
+    - debug:
+        var: bigip_next_cm_token
+    
+    - name: Get Inspection Services (filter by name: "my-sslo-tap")
+      uri:
+        url: https://{{ bigip_next_cm_mgmt_ip }}/api/v1/spaces/default/security/inspection-services?filter=name+eq+%27my-sslo-tap%27&select=name,id
+        method: GET
+        headers:
+          Authorization: "Bearer {{ bigip_next_cm_token }}"
+          Content-Type: application/json
+        timeout: 60
+        status_code: 200
+        validate_certs: false
+      register: json_response
+      retries: 30
+      delay: 30
+
+    - name: Set BIG-IP Instance ID
+      set_fact:
+        insp_ids: "{{ json_response.json._embedded.inspection_services | map(attribute='id') }}"
+
+    - name: Create Service Chain (add filtered inspection services)
+      uri:
+        url: https://{{ bigip_next_cm_mgmt_ip }}/api/v1/spaces/default/security/service-chains
+        method: POST
+        headers:
+          Authorization: "Bearer {{ bigip_next_cm_token }}"
+          Content-Type: application/json
+        body: |
+          {
+            "name": "my-sslo-service-chain",
+            "inspection_services": {{ insp_ids }}
+          }
+        body_format: json
+        timeout: 60
+        status_code: 200
+        validate_certs: false
+      register: json_response
+      retries: 30
+      delay: 30
+
+    - debug:
+        var: json_response
+```
