@@ -137,6 +137,7 @@ ansible-playbook -i notahost, sslo-insp-ehttp.yaml --extra-vars "bigip_next_cm_m
       delay: 30
       register: json_response
 
+
     - name: Authenticate to BIG-IP Next CM API
       uri:
         url: https://{{ bigip_next_cm_mgmt_ip }}/api/login
@@ -156,9 +157,11 @@ ansible-playbook -i notahost, sslo-insp-ehttp.yaml --extra-vars "bigip_next_cm_m
       retries: 30
       delay: 30
 
+
     - name: Set the BIG-IP Next CM token
       set_fact:
         bigip_next_cm_token: "{{ bigip_next_cm_token.json.access_token }}"
+
     
     - name: Create SSLO HTTP Explicit Inspection Service
       uri:
@@ -204,9 +207,11 @@ ansible-playbook -i notahost, sslo-insp-ehttp.yaml --extra-vars "bigip_next_cm_m
         validate_certs: false
       register: json_response
 
+
     - name: Set Inspection Service ID
       set_fact:
         insp_id: "{{ json_response.json.id}}"
+
 
     - name: Get BIG-IP Next ID
       uri:
@@ -220,9 +225,11 @@ ansible-playbook -i notahost, sslo-insp-ehttp.yaml --extra-vars "bigip_next_cm_m
         validate_certs: false
       register: json_response
 
+
     - name: Set BIG-IP Instance ID
       set_fact:
         bigip_id: "{{ json_response.json._embedded.devices | map(attribute='id') }}"
+
 
     - name: Deploy SSLO HTTP Explicit Inspection Service to BIG-IP Instance
       uri:
@@ -241,6 +248,7 @@ ansible-playbook -i notahost, sslo-insp-ehttp.yaml --extra-vars "bigip_next_cm_m
         status_code: 200
         validate_certs: false
       register: json_response
+
 
     - debug:
         var: json_response
