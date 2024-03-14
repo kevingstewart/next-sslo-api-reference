@@ -139,3 +139,126 @@ ${\large{\textbf{\textsf{\color{red}API\ Reference:\ TrafficRuleSets\ Rule\ Acti
 |                    RESET                   | {<br /> &emsp;"actionType":"RESET"<br /> }                                                        | This actionType corresponds to the Flow Action. The default action is to **allow** traffic.                                    |
 | SSL_PROXY_INTERCEPT<br /> SSL_PROXY_BYPASS | {<br /> &emsp;"actionType":"SSL_PROXY_INTERCEPT"<br /> }                                          | This actionType corresponds to the SSL Action and determines TLS decryption or bypass.                                         |
 |                SERVICE_CHAIN               | {<br /> &emsp;"actionType":"SERVICE_CHAIN",<br /> &emsp;"serviceChain":Service-Chain-UUID<br /> } | This actionType corresponds to the Service Chain attribute and must additionally supply the ID value of a valid service chain. |
+
+
+${\normalsize{\textsf{\color{white}===}}}$
+
+${\large{\textbf{\textsf{\color{red}Ansible\ Reference}}}}$
+
+Execute with:
+```
+bigip_next_cm_mgmt_ip="10.1.1.6"
+bigip_next_password="my_password"
+ansible-playbook -i notahost, sslo-policy.yaml --extra-vars "bigip_next_cm_mgmt_ip=$bigip_next_cm_mgmt_ip bigip_next_password=$bigip_next_password"
+```
+
+```yaml
+---
+- hosts: all
+  connection: local
+
+  tasks:
+    - name: Check if BIG-IP Next Central Manager instance is available (HTTPS responding 405 on /api/login)
+      uri:
+        url: https://{{ bigip_next_cm_mgmt_ip }}/api/login
+        method: GET
+        status_code: 405
+        validate_certs: false
+      until: json_response.status == 405
+      retries: 50
+      delay: 30
+      register: json_response
+
+
+    - name: Authenticate to BIG-IP Next CM API
+      uri:
+        url: https://{{ bigip_next_cm_mgmt_ip }}/api/login
+        method: POST
+        headers:
+          Content-Type: application/json
+        body: |
+          {
+              "username": "admin",
+              "password": "{{ bigip_next_password }}"
+          }
+        body_format: json
+        timeout: 60
+        status_code: 200
+        validate_certs: false
+      register: bigip_next_cm_token
+      retries: 30
+      delay: 30
+
+    - name: Set the BIG-IP Next CM token
+      set_fact:
+        bigip_next_cm_token: "{{ bigip_next_cm_token.json.access_token }}"
+
+    
+    - name: Create SSLO Inbound Policy
+      uri:
+        url: https://{{ bigip_next_cm_mgmt_ip }}/api/v1/spaces/default/security/policies
+        method: POST
+        headers:
+          Authorization: "Bearer {{ bigip_next_cm_token }}"
+          Content-Type: application/json
+        body: |
+          {
+            "policyName": "my-sslo-ansible-policy",
+            "policyType": "default",
+            "trafficRuleSets": [
+              {
+                "ruleType": "traffic",
+                "rules": [
+                  {
+                    "name": "All Traffic",
+                    "conditions": [],
+                    "actions": [
+                      {
+                        "actionType": "SSL_PROXY_INTERCEPT"
+                      },
+                      {
+                        "actionType": "SERVICE_CHAIN",
+                        "serviceChain": "eabf0628-9356-4a8b-9ffc-6212ca68b49e"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "loggingRuleSets": [
+              {
+                "ruleType": "logging",
+                "rules": [
+                  {
+                    "name": "all-logging",
+                    "conditions": [
+                      {
+                        "conditionType": "IP_PROTOCOL",
+                        "operator": "equals",
+                        "values": [
+                          6
+                        ],
+                        "local": true
+                      }
+                    ],
+                    "actions": [
+                      {
+                        "actionType": "COLLECT_DATA"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        body_format: json
+        timeout: 60
+        status_code: 200
+        validate_certs: false
+      register: json_response
+      retries: 30
+      delay: 30
+
+    - debug:
+        var: json_response
+```
