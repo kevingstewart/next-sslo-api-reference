@@ -45,7 +45,7 @@ To fetch an SSL Orchestrator application use the following GET. The ID will be a
 ```bash
 GET {{CM}}/api/v1/spaces/default/appsvcs/documents
 ```
-**Filtered** by application *name* string, where resulting ID is at ```_embedded.appsvcs[0].id```
+**Filtered** by application *name* string (ex. my_app), where resulting ID is at ```_embedded.appsvcs[0].id```
 ```bash
 GET {{CM}}/api/v1/spaces/default/appsvcs/documents/?filter=name+eq+%27my_app%27&select=name,id
 ```
