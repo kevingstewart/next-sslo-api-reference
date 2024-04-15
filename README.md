@@ -1,6 +1,6 @@
 # F5 BIG-IP Next SSL Orchestrator API Examples
 
-This project is an *unofficial* compendium of API examples for creating and managing BIG-IP Next SSL Orchestrator objects. Please always refer to the official F5 Next API pages for official API reference: 
+This project is an *unofficial* compendium of API examples for creating and managing BIG-IP Next SSL Orchestrator objects. Please always refer to the official F5 Next API pages for official API reference. SSL Orchestrator objects are under the *Security* section. 
 
 https://clouddocs.f5.com/products/bigip-next/mgmt-api/latest/ApiReferences/bigip_public_api_ref/r_openapi-next.html.
 
