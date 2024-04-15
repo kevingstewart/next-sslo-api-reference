@@ -41,7 +41,7 @@ Deploying an inspection service requires two steps: defining the inspection serv
 ```bash
 GET {{CM}}/api/v1/spaces/default/instances?select=hostname,id
 ```
-**Filtered** by *hostname* string, where resulting ID is at ```_embedded.devices[0].id```
+**Filtered** by *hostname* string (ex. bigip-next.f5labs.com), where resulting ID is at ```_embedded.devices[0].id```
 ```bash
 GET {{CM}}/api/v1/spaces/default/instances?filter=hostname+eq+%27bigip-next.f5labs.com%27&select=hostname,id
 ```
