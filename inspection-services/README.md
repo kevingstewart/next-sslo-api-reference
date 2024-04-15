@@ -60,7 +60,7 @@ To fetch the list of inspection services use the following GET. The ID will be a
 ```bash
 GET {{CM}}/api/v1/spaces/default/security/inspection-services
 ```
-**Filtered** by *name* string, where resulting ID is at ```_embedded.inspection_services[0].id```
+**Filtered** by *name* string (ex. my-sslo-tap), where resulting ID is at ```_embedded.inspection_services[0].id```
 ```bash
 GET {{CM}}/api/v1/spaces/default/security/inspection-services?filter=name+eq+%27my-sslo-tap%27&select=name,id
 ```
