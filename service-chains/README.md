@@ -40,7 +40,7 @@ To fetch the list of service chains use the following GET. The ID will be at ```
 ```bash
 GET {{CM}}/api/v1/spaces/default/security/service-chains
 ```
-**Filtered** by *name* string, where resulting ID is at ```_embedded.service_chains[0].id```
+**Filtered** by *name* string (ex. my-api-service-chain), where resulting ID is at ```_embedded.service_chains[0].id```
 ```bash
 GET {{CM}}/api/v1/spaces/default/security/service-chains?filter=name+eq+%27my-api-service-chain%27&select=name,id
 ```
