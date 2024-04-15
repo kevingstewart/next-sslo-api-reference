@@ -41,7 +41,7 @@ To fetch an SSL Orchestrator policy use the following GET. The ID will be at ```
 ```bash
 GET {{CM}}/api/v1/spaces/default/security/policies
 ```
-**Filtered** by *name* string, where resulting ID is at ```_embedded.policies[0].id```
+**Filtered** by *name* string (ex. my-sslo-policy), where resulting ID is at ```_embedded.policies[0].id```
 ```bash
 GET {{CM}}/api/v1/spaces/default/security/policies?filter=name+eq+%27my-sslo-policy%27&select=name,id
 ```
