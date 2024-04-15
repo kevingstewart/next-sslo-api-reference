@@ -8,6 +8,10 @@ A **Policy** is a set of rules that match traffic patterns. When a rule conditio
 * Intercepting (decrypting) or bypassing decryption
 * Assigning the flow to a service chain of inspection services
 
+The SSL Orchestrator policy is expansive, so please reference the official API resources for detailed security policy options:
+
+https://clouddocs.f5.com/products/bigip-next/mgmt-api/latest/ApiReferences/bigip_public_api_ref/r_openapi-next.html#tag/SSL-Orchestrator/operation/createPolicy
+
 ${\normalsize{\textsf{\color{white}===}}}$
 
 ${\large{\textbf{\textsf{\color{red}Common\ Policy\ Patterns}}}}$
