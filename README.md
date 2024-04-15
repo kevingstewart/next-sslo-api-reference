@@ -23,7 +23,7 @@ The purpose of this project is to demonstrate the ease and usefulness of **autom
 
 This project contains three automation "modes" for SSL Orchestrator objects to suit different environmental preferences:
 
-* Native BIG-IP Next Central Manager "CM" API for the SSL Orchestrator objects, plus Application Services v3 "AS3" API for the application stacks.
+* Native BIG-IP Next Central Manager "CM" API for the SSL Orchestrator objects, plus Application Services 3 "AS3" API for the application stacks.
 * Curl command line utilizing the CM and AS3 APIs
 * Ansible playbooks utilizing the CM and AS3 APIs
 
