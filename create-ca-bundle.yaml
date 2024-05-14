@@ -1,6 +1,7 @@
 ---
 - name: Create CA Bundle
   hosts: all
+  gather_facts: no
 
   tasks:
     - name: Check if BIG-IP Next Central Manager instance is available (HTTPS responding 405 on /api/login)
