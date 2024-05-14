@@ -1,0 +1,103 @@
+---
+- name: Create CA Bundle
+
+  tasks:
+    - name: Check if BIG-IP Next Central Manager instance is available (HTTPS responding 405 on /api/login)
+      uri:
+        url: https://{{ bigip_next_cm_mgmt_ip }}/api/login
+        method: GET
+        status_code: 405
+        validate_certs: false
+      until: json_response.status == 405
+      retries: 50
+      delay: 30
+      register: json_response
+
+    - name: Authenticate to BIG-IP Next CM API
+      uri:
+        url: https://{{ bigip_next_cm_mgmt_ip }}/api/login
+        method: POST
+        headers:
+          Content-Type: application/json
+        body: |
+          {
+              "username": "admin",
+              "password": "{{ bigip_next_cm_mgmt_password }}"
+          }
+        body_format: json
+        timeout: 60
+        status_code: 200
+        validate_certs: false
+      register: bigip_next_cm_token
+      retries: 30
+      delay: 30
+
+    - name: Set the BIG-IP Next CM token
+      set_fact:
+        bigip_next_cm_token: "{{ bigip_next_cm_token.json.access_token }}"
+
+
+    - name: Delete temporary bundle files
+      file:
+        path: '{{ item }}'
+        state: absent
+      with_items:
+        - "./bundle_tmp.crt"
+        - "./bundle_tmp1.crt"
+        - "./bundle_tmp2.crt"
+
+    - name: Get external CA bundle
+      ansible.builtin.uri:
+        return_content: true
+        dest: ./bundle_tmp.crt
+
+        ## Choose one of the following public CA bundles:
+        ## Mozilla: Root certs in Mozilla's root store with websites (TLS/SSL) trust bits enabled (https://wiki.mozilla.org/CA/Included_Certificates)
+        url: "https://ccadb.my.salesforce-sites.com/mozilla/IncludedRootsPEMTxt?TrustBitsInclude=Websites"
+
+        ## Curl: CA certificates extracted from Mozilla (https://curl.se/docs/caextract.html)
+        #url: "https://curl.se/ca/cacert.pem"
+
+        ## Badger ca-bundle master
+        #url: "https://raw.githubusercontent.com/bagder/ca-bundle/master/ca-bundle.crt"
+                
+    - name: Format bundle
+      shell: 
+        openssl crl2pkcs7 -nocrl -certfile ./bundle_tmp.crt | openssl pkcs7 -print_certs | grep -vE '^subject=|^issuer=|^$' | perl -pe 's/\n/\\n/g' > ./bundle_tmp1.crt && cat ./bundle_tmp1.crt | head -c -2 > ./bundle_tmp2.crt
+
+    - name: Get formatted bundle into variable
+      slurp:
+        src: './bundle_tmp2.crt'
+      register: formatted_bundle
+
+    - name: Install CA bundle
+      uri:
+        url: https://{{ bigip_next_cm_mgmt_ip }}/api/v1/spaces/default/certificates/import
+        method: POST
+        headers:
+          Authorization: "Bearer {{ bigip_next_cm_token }}"
+          Content-Type: application/json
+        body: |
+          {
+            "import_type": "PEM",
+            "name": "my-ca-bundle",
+            "source": "Access",
+            "cert_text": "{{ formatted_bundle.content | ansible.builtin.b64decode }}"
+          }
+        body_format: json
+        timeout: 60
+        status_code: 202
+        validate_certs: false
+      register: json_response
+
+    - name: Delete temporary bundle files
+      file:
+        path: '{{ item }}'
+        state: absent
+      with_items:
+        - "./bundle_tmp.crt"
+        - "./bundle_tmp1.crt"
+        - "./bundle_tmp2.crt"
+
+    - debug:
+        var: json_response
